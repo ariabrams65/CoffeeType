@@ -67,6 +67,10 @@ li a:hover {
     text-align: center;
 }
 
+.text p {
+    font-size: 30px;
+}
+
 .flex-container {
     display: flex;
     width: 100%;
@@ -76,11 +80,11 @@ li a:hover {
 .under-text {
     display: block;
     height: 50px;
-    width: 300px;
+    width: 350px;
     margin: auto;
 }
 
-.text-input {
+#text-input {
     box-sizing: border-box;
     display: block;
     height: 100%;
@@ -89,8 +93,16 @@ li a:hover {
     float: left;
 }
 
-.reload-button {
-    display: block;
+#reload-button {
+    display: inline-block;
     height: 100%;
+}
+
+#timer {
     float: right;
+    width: 50px;
+    margin: 0;
+    font-size: 50px;
+    font-family: Arial;
+    color: rgb(0, 0, 0);
 }
