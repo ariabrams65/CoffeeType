@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex-container">
+    <div class="option-list">
+        <ul>
+            <li>
+                <label>Wordset</label>
+                <select>
+                    <option>200</option>
+                    <option>1,000</option>
+                    <option>10,000</option>
+                </select>
+            </li>
+            <li>
+                <label>Duration</label>
+                <select>
+                    <option>60</option>
+                    <option>30</option>
+                    <option>15</option>
+                </select>
+            </li>
+            <li>
+                <label>Punctuation</label>
+                <input type="checkbox">
+            </li>
+            <li>
+                <label>Numbers</label>
+                <input type="checkbox">
+            </li>
+        </ul>
+    </div>
+    <div class="typing">
+        <div class="text">
+            <p>
+            </p>
+        </div>
+        <div class="under-text">
+            <input type="text" class="text-input">
+            <button class="reload-button">Reload</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
