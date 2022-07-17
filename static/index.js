@@ -1,48 +1,81 @@
 'use strict'
 
-let typingText = {
-    text: [],
-    firstVisibleWordIndex: 0,
-    lastVisibleWordIndex: 0
-};
-assignEventListeners();
-changeText();
+main();
+
+function main() {
+    let textData = {
+        text: [],
+        firstVisibleWordIndex: 0,
+        nextNonvisibleWordIndex: 0,
+        curWordIndex: 0,
+        correctWords: 0,
+        incorrectWords: 0
+    }
+    distributeTextData(textData);
+    assignEventListeners();
+}
 
 function assignEventListeners() {
-    let elements = getTextModifyingElements();
+    let elements = getAllInteractiveElements();
 
     elements.wordset.addEventListener('change', changeText);
     elements.punctuation.addEventListener('change', changeText);
     elements.numbers.addEventListener('change', changeText);
-    document.getElementById('reload-button')
-        .addEventListener('mouseup', changeText);
-    window.addEventListener('resize', resizeTextToFit)
+    elements.reloadButton.addEventListener('click', changeText);
+    elements.window.addEventListener('resize', resizeTextToFit);
+    elements.window.addEventListener('DOMContentLoaded', changeText);
+    elements.textInput.addEventListener('input', textInputHandler);
 }
 
-async function changeText()
-{
-    typingText.text = (await requestText()).split(' ');
-    resizeTextToFit();
+/**
+ * 
+ * @param {Object} textData data that gets distributed to all interactive elements 
+ */
+function distributeTextData(textData) {
+    let elements = getAllInteractiveElements();
+    for (const element in elements) {
+        elements[element].textData = textData;
+    }
 }
 
-function resizeTextToFit() {
+function getAllInteractiveElements() {
+    let elements = getTextModifyingElements();
+    elements.reloadButton = document.getElementById('reload-button');
+    elements.window = window;
+    elements.textInput = document.getElementById('text-input');
+
+    return elements;
+}
+
+function textInputHandler(event) {
+    
+}
+
+async function changeText(event) {
+    let ct = event.currentTarget;
+    ct.textData.text = (await requestText()).split(' ');
+    resizeTextToFit({currentTarget: ct});
+}
+
+function resizeTextToFit(event) {
     let line1 = document.getElementById('line1');
     let line2 = document.getElementById('line2');
     let line3 = document.getElementById('line3');
-
-    [line1.innerHTML, line2.innerHTML, line3.innerHTML] = getLines(3);
+    [line1.innerHTML, line2.innerHTML, line3.innerHTML] =
+        getLines(event.currentTarget.textData, 3);
 }
 
-function getLines(numLines) {
+function getLines(textData, numLines) {
     let lines = [];
-    let index = typingText.lastVisibleWordIndex;
+    let index = textData.firstVisibleWordIndex;
     for (let i = 0; i < numLines; ++i) {
         let line = "";      
-        for (; stringFits(line + typingText.text[index] + ' '); ++index) {
-            line += typingText.text[index] + ' ';
+        for (; stringFits(line + textData.text[index] + ' '); ++index) {
+            line += textData.text[index] + ' ';
         }
         lines.push(line);
     }
+    textData.nextNonvisibleWordIndex = index;
     return lines;
 }
 
