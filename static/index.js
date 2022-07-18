@@ -37,7 +37,6 @@ function assignEventListeners() {
 function textInputHandler(event) {
     let textData = event.currentTarget.textData;
     if (!textData.testStarted) {
-        textData.testStarted = true;
         startTest(textData);
     }
     let input = event.currentTarget.value; 
@@ -46,18 +45,25 @@ function textInputHandler(event) {
         return;
     }
     if (input[input.length - 1] === ' ') {
-        if (textData.indexesOfLastWords.includes(textData.curWordIndex)) {
-            textData.firstVisibleWordIndex = textData.curWordIndex + 1;
-        }
-        let bool = isWordCorrect(input.trimEnd(), textData, true);
-        bool ? ++textData.correctWords : ++textData.incorrectWords;
-        colorWord(textData, bool);
-        ++textData.curWordIndex;
+        incrementWord(textData, input);
         event.currentTarget.value = '';
     } else { 
         colorWord(textData, isWordCorrect(input, textData));
     }
     reloadText(event);
+}
+
+function incrementWord(textData, input) {
+    if (textData.indexesOfLastWords.includes(textData.curWordIndex)) {
+        textData.firstVisibleWordIndex = textData.curWordIndex + 1;
+    }
+    let bool = isWordCorrect(input.trimEnd(), textData, true);
+    bool ? ++textData.correctWords : ++textData.incorrectWords;
+    colorWord(textData, bool);
+    
+    textData.text[textData.curWordIndex].current = false;
+    ++textData.curWordIndex;
+    textData.text[textData.curWordIndex].current = true;
 }
 
 
@@ -77,6 +83,7 @@ function colorWord(textData, colorGreen) {
 
 
 function startTest(textData) {
+    textData.testStarted = true;
     let timer = document.getElementById('timer');
     let time = parseFloat(timer.innerHTML);
 
@@ -122,6 +129,7 @@ async function changeText(event) {
     for (let word of words) {
         ct.textData.text.push({word: word, color: 'black'});
     }
+    ct.textData.text[0].current = true;
     reloadText({currentTarget: ct});
 }
 
@@ -145,7 +153,7 @@ function getLines(textData, numLines) {
         let line = "";      
         for (; stringFits(wordLine + text[index].word + ' '); ++index) {
             wordLine += text[index].word + ' ';
-            line += getColoredWordAsStr(text[index].word, text[index].color) + ' ';
+            line += getColoredWordAsStr(text[index]) + ' ';
         }
         textData.indexesOfLastWords.push(index - 1);
         lines.push(line);
@@ -155,8 +163,11 @@ function getLines(textData, numLines) {
 }
 
 
-function getColoredWordAsStr(word, color) {
-    return `<span style="color:${color}">${word}</span>`;
+function getColoredWordAsStr(word) {
+    if (word.current) {
+        return `<span style="color:${word.color}; text-decoration:underline">${word.word}</span>`;
+    }
+    return `<span style="color:${word.color}">${word.word}</span>`;
 }
 
 
