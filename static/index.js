@@ -3,34 +3,49 @@
 main();
 
 function main() {
-    let textData = {
-        text: [],
-        firstVisibleWordIndex: 0,
-        nextNonvisibleWordIndex: 0,
-        curWordIndex: 0,
-        correctWords: 0,
-        incorrectWords: 0,
-        testStarted: false,
-        indexesOfLastWords : []
-    }
+    let textData = new TextData();
     distributeTextData(textData);
     assignEventListeners();
+}
+
+function TextData() {
+    this.text = [];
+    this.firstVisibleWordIndex = 0;
+    this.nextNonvisibleWordIndex = 0;
+    this.curWordIndex = 0;
+    this.correctChars = 0;
+    this.incorrectWords = 0;
+    this.testStarted = false;
+    this.indexesOfLastWords = [];
+    this.reset = () => {
+        for (let prop in this) {
+            if (prop != 'reset') {
+                this[prop] = 0;
+            }
+        }
+    }
 }
 
 
 function assignEventListeners() {
     let elements = getAllInteractiveElements();
 
-    elements.wordset.addEventListener('change', changeText);
-    elements.punctuation.addEventListener('change', changeText);
-    elements.numbers.addEventListener('change', changeText);
-    elements.reloadButton.addEventListener('click', changeText);
+    elements.wordset.addEventListener('change', resetTest);
+    elements.punctuation.addEventListener('change', resetTest);
+    elements.numbers.addEventListener('change', resetTest);
+    elements.reloadButton.addEventListener('click', resetTest);
     elements.window.addEventListener('resize', reloadText);
     elements.window.addEventListener('DOMContentLoaded', changeText);
     elements.textInput.addEventListener('input', textInputHandler);
-    elements.duration.addEventListener('change', function(event) {
-        document.getElementById('timer').innerHTML = event.currentTarget.value;
-    })
+    elements.duration.addEventListener('change', resetTest)
+}
+
+function resetTest(event) {
+    clearInterval(event.currentTarget.textData.intervalId);
+    event.currentTarget.textData.reset();
+    document.getElementById('timer').innerHTML = document.getElementById('duration').value;
+    changeText(event);
+    document.getElementById('text-input').value = '';
 }
 
 
@@ -47,7 +62,9 @@ function textInputHandler(event) {
     if (input[input.length - 1] === ' ') {
         incrementWord(textData, input);
         event.currentTarget.value = '';
-    } else { 
+    } else if (input === '') { 
+        textData.text[textData.curWordIndex].color = 'black';
+    } else {
         colorWord(textData, isWordCorrect(input, textData));
     }
     reloadText(event);
@@ -57,8 +74,9 @@ function incrementWord(textData, input) {
     if (textData.indexesOfLastWords.includes(textData.curWordIndex)) {
         textData.firstVisibleWordIndex = textData.curWordIndex + 1;
     }
-    let bool = isWordCorrect(input.trimEnd(), textData, true);
-    bool ? ++textData.correctWords : ++textData.incorrectWords;
+    let trimmedInput = input.trimEnd();
+    let bool = isWordCorrect(trimmedInput , textData, true);
+    bool ? textData.correctChars += trimmedInput.length : ++textData.incorrectWords;
     colorWord(textData, bool);
     
     textData.text[textData.curWordIndex].current = false;
@@ -87,10 +105,10 @@ function startTest(textData) {
     let timer = document.getElementById('timer');
     let time = parseFloat(timer.innerHTML);
 
-    let intervalId = setInterval(function() {
+    textData.intervalId = setInterval(function() {
         --time;
         if (time === 0) {
-            clearInterval(intervalId);
+            clearInterval(textData.intervalId);
             endTest(textData);
         }
         timer.innerHTML = time;
@@ -99,7 +117,11 @@ function startTest(textData) {
 
 
 function endTest(textData) {
-    console.log('end');
+    const AVERAGE_WORD_LENGTH = 4.7;
+    console.log(textData.correctChars);
+    let wmp = ((textData.correctChars / AVERAGE_WORD_LENGTH)
+        / document.getElementById('duration').value) * 60;
+    console.log(wmp);
 }
 
 
@@ -149,8 +171,8 @@ function getLines(textData, numLines) {
     let text = textData.text;
     textData.indexesOfLastWords = [];
     for (let i = 0; i < numLines; ++i) {
-        let wordLine = "";
-        let line = "";      
+        let wordLine = '';
+        let line = '';      
         for (; stringFits(wordLine + text[index].word + ' '); ++index) {
             wordLine += text[index].word + ' ';
             line += getColoredWordAsStr(text[index]) + ' ';
@@ -161,6 +183,35 @@ function getLines(textData, numLines) {
     textData.nextNonvisibleWordIndex = index;
     return lines;
 }
+/*
+function getLines(textData, numLines) {
+    let lines = [];
+    let index = textData.firstVisibleWordIndex;
+    let text = textData.text;
+    textData.indexesOfLastWords = [];
+    for (let i = 0; i < numLines; ++i) {
+        let wordLine = '';
+        let line = '';      
+        while (true) {
+            let toAdd = text[index] ? text[index].word : '';
+            if (!stringFits(wordLine + toAdd + ' ')) {
+                break;
+            }
+            wordLine += toAdd + ' ';
+            if (toAdd) {
+                line += getColoredWordAsStr(text[index]) + ' ';
+            } else {
+                line += ' ';
+            }
+            ++index;
+        }
+        textData.indexesOfLastWords.push(index - 1);
+        lines.push(line);
+    }
+    textData.nextNonvisibleWordIndex = index;
+    return lines;
+}
+*/
 
 
 function getColoredWordAsStr(word) {
