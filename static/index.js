@@ -10,11 +10,13 @@ function main() {
         curWordIndex: 0,
         correctWords: 0,
         incorrectWords: 0,
-        testStarted: false
+        testStarted: false,
+        indexesOfLastWords : []
     }
     distributeTextData(textData);
     assignEventListeners();
 }
+
 
 function assignEventListeners() {
     let elements = getAllInteractiveElements();
@@ -31,6 +33,7 @@ function assignEventListeners() {
     })
 }
 
+
 function textInputHandler(event) {
     let textData = event.currentTarget.textData;
     if (!textData.testStarted) {
@@ -43,30 +46,35 @@ function textInputHandler(event) {
         return;
     }
     if (input[input.length - 1] === ' ') {
-        colorWord(input.trimEnd(), textData, true);
+        if (textData.indexesOfLastWords.includes(textData.curWordIndex)) {
+            textData.firstVisibleWordIndex = textData.curWordIndex + 1;
+        }
+        let bool = isWordCorrect(input.trimEnd(), textData, true);
+        bool ? ++textData.correctWords : ++textData.incorrectWords;
+        colorWord(textData, bool);
         ++textData.curWordIndex;
         event.currentTarget.value = '';
-    } else {
-        colorWord(input, textData);
+    } else { 
+        colorWord(textData, isWordCorrect(input, textData));
     }
     reloadText(event);
 }
 
-function colorWord(word, textData, mustMatch=false) {
-    let index = textData.curWordIndex;
-    let curWord = textData.text[index];
-    let correctWord = curWord.word;
-    
+
+function isWordCorrect(word, textData, mustMatch=false) {
+    let correctWord = textData.text[textData.curWordIndex].word;
     if (mustMatch) {
-       curWord.color = (word === correctWord ? 'green' : 'red');
-       return;
+        return word === correctWord;
     }
-    if (correctWord.slice(0, word.length) === word) {
-        curWord.color = 'green';
-    } else {
-        curWord.color = 'red';
-    }
+    return correctWord.slice(0, word.length) === word;
 }
+
+
+function colorWord(textData, colorGreen) {
+    textData.text[textData.curWordIndex].color =
+        colorGreen ? 'green' : 'red';
+}
+
 
 function startTest(textData) {
     let timer = document.getElementById('timer');
@@ -82,9 +90,11 @@ function startTest(textData) {
     }, 1000);
 }
 
+
 function endTest(textData) {
     console.log('end');
 }
+
 
 function distributeTextData(textData) {
     let elements = getAllInteractiveElements();
@@ -92,6 +102,7 @@ function distributeTextData(textData) {
         elements[element].textData = textData;
     }
 }
+
 
 function getAllInteractiveElements() {
     let elements = getTextModifyingElements();
@@ -103,6 +114,7 @@ function getAllInteractiveElements() {
     return elements;
 }
 
+
 async function changeText(event) {
     let ct = event.currentTarget;
     let words = (await requestText()).split(' ');
@@ -113,6 +125,7 @@ async function changeText(event) {
     reloadText({currentTarget: ct});
 }
 
+
 function reloadText(event) {
     let line1 = document.getElementById('line1');
     let line2 = document.getElementById('line2');
@@ -121,10 +134,12 @@ function reloadText(event) {
         getLines(event.currentTarget.textData, 3);
 }
 
+
 function getLines(textData, numLines) {
     let lines = [];
     let index = textData.firstVisibleWordIndex;
     let text = textData.text;
+    textData.indexesOfLastWords = [];
     for (let i = 0; i < numLines; ++i) {
         let wordLine = "";
         let line = "";      
@@ -132,19 +147,23 @@ function getLines(textData, numLines) {
             wordLine += text[index].word + ' ';
             line += getColoredWordAsStr(text[index].word, text[index].color) + ' ';
         }
+        textData.indexesOfLastWords.push(index - 1);
         lines.push(line);
     }
     textData.nextNonvisibleWordIndex = index;
     return lines;
 }
 
+
 function getColoredWordAsStr(word, color) {
     return `<span style="color:${color}">${word}</span>`;
 }
 
+
 function stringFits(str) {
    return getVisualLength(str) < document.getElementById('text-box').clientWidth;
 }
+
 
 function getVisualLength(str) {
     let fontEl = document.querySelector('.text p');
@@ -158,6 +177,7 @@ function getVisualLength(str) {
     const metrics = context.measureText(str);
     return metrics.width;
 }
+
 
 async function requestText() {
     const elements = getTextModifyingElements();
@@ -175,6 +195,7 @@ async function requestText() {
     let text = await response.json();
     return text["text"];
 }
+
 
 function getTextModifyingElements() {
     return {
