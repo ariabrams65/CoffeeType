@@ -33,6 +33,7 @@ function assignEventListeners() {
     elements.wordset.addEventListener('change', resetTest);
     elements.punctuation.addEventListener('change', resetTest);
     elements.numbers.addEventListener('change', resetTest);
+    elements.specialCharacters.addEventListener('change', resetTest);
     elements.reloadButton.addEventListener('click', resetTest);
     elements.window.addEventListener('resize', reloadText);
     elements.window.addEventListener('DOMContentLoaded', changeText);
@@ -40,12 +41,15 @@ function assignEventListeners() {
     elements.duration.addEventListener('change', resetTest)
 }
 
+
 function resetTest(event) {
     clearInterval(event.currentTarget.textData.intervalId);
     event.currentTarget.textData.reset();
     document.getElementById('timer').innerHTML = document.getElementById('duration').value;
     changeText(event);
-    document.getElementById('text-input').value = '';
+    let textInput = document.getElementById('text-input');
+    textInput.value = '';
+    textInput.focus();
 }
 
 
@@ -103,25 +107,27 @@ function colorWord(textData, colorGreen) {
 function startTest(textData) {
     textData.testStarted = true;
     let timer = document.getElementById('timer');
-    let time = parseFloat(timer.innerHTML);
+    let time = parseFloat(document.getElementById('duration').value);
 
     textData.intervalId = setInterval(function() {
         --time;
         if (time === 0) {
             clearInterval(textData.intervalId);
             endTest(textData);
+        } else {
+            timer.innerHTML = time;
         }
-        timer.innerHTML = time;
     }, 1000);
 }
 
 
 function endTest(textData) {
     const AVERAGE_WORD_LENGTH = 4.7;
-    console.log(textData.correctChars);
     let wmp = ((textData.correctChars / AVERAGE_WORD_LENGTH)
         / document.getElementById('duration').value) * 60;
-    console.log(wmp);
+    //todo
+    resetTest({currentTarget: {textData: textData}});
+    
 }
 
 
@@ -249,9 +255,11 @@ async function requestText() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            'wordset': elements.wordset.value,
+            'numWords': Number(elements.wordset.value),
+            'wordset': elements.wordset.options[elements.wordset.selectedIndex].dataset.wordset,
             'punctuation': elements.punctuation.checked,
-            'numbers': elements.numbers.checked
+            'numbers': elements.numbers.checked,
+            'specialCharacters' : elements.specialCharacters.checked
         })
     })
     let text = await response.json();
@@ -263,6 +271,7 @@ function getTextModifyingElements() {
     return {
         'wordset': document.getElementById('wordset'),
         'punctuation': document.getElementById('punctuation'),
-        'numbers': document.getElementById('numbers')
+        'numbers': document.getElementById('numbers'),
+        'specialCharacters' : document.getElementById('special-characters')
     };
 }
