@@ -128,6 +128,7 @@ function endTest(textData) {
         / document.getElementById('duration').value) * 60;
     //todo
     resetTest({currentTarget: {textData: textData}});
+    alert('WMP: ' + Math.round(wmp))
     
 }
 

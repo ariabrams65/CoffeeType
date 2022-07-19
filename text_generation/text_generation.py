@@ -30,11 +30,11 @@ def _generateWord(wordset, numbers=False, specialChars=False):
 
 def getWeights(numbers, specialChars):
     if (numbers and specialChars):
-        return [.6, .2, .2]
+        return [6, 2, 2]
     if (numbers):
-        return [.8, .2, 0]
+        return [8, 2, 0]
     if (specialChars):
-        return [.8, 0, .2]
+        return [8, 0, 2]
     
     return [1, 0, 0]
 
@@ -49,31 +49,23 @@ def _generateSpecialCharWord():
 
 def _punctuateList(wordList):
     wordList[0] = wordList[0].capitalize()
-    i = 1
-    while (i < len(wordList)):
-        if (random.choices([True, False], weights=[3, 7], k=1)[0]):
-            if (_punctuateWord(wordList, i) == _endSentence):
-                i += 1 
-        i += 1 
+    for i in range(1, len(wordList), 2):
+        if (random.choices([True, False], weights=[6, 4], k=1)[0]):
+            random.choice([_surroundWord, _endWord, _endSentence])(wordList, i)
 
-
-def _punctuateWord(wordList, index):
-    func = random.choice([_surroundWord, _endWord, _endSentence])
-    print(index)
-    func(wordList, index)
-    return func
 
 def _surroundWord(wordList, index):
     punc = random.choice(['()', '""', '\'\''])
     wordList[index] = punc[0] + wordList[index] + punc[1]
 
+
 def _endWord(wordList, index):
     punc = random.choice([':', ';', ','])
     wordList[index] = wordList[index] + punc
+
 
 def _endSentence(wordList, index):
     punc = random.choice(['.', '!', '?'])
     wordList[index] = wordList[index] + punc
     if (index + 1 < len(wordList)):
         wordList[index + 1] = wordList[index + 1].capitalize()
-
