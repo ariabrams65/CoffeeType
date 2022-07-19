@@ -43,6 +43,7 @@ function assignEventListeners() {
 
 
 function resetTest(event) {
+    console.log(event.currentTarget)
     clearInterval(event.currentTarget.textData.intervalId);
     event.currentTarget.textData.reset();
     document.getElementById('timer').innerHTML = document.getElementById('duration').value;
@@ -222,7 +223,9 @@ function getLines(textData, numLines) {
 
 function getColoredWordAsStr(word) {
     if (word.current) {
-        return `<span style="color:${word.color}; text-decoration:underline">${word.word}</span>`;
+        //return `<span style="color:${word.color}; text-decoration:underline">${word.word}</span>`;
+        return `<span style="color:${word.color}" class='highlight'>${word.word}</span>`;
+        
     }
     return `<span style="color:${word.color}">${word.word}</span>`;
 }
