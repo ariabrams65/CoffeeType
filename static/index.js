@@ -263,7 +263,8 @@ async function requestText() {
             'wordset': elements.wordset.options[elements.wordset.selectedIndex].dataset.wordset,
             'punctuation': elements.punctuation.checked,
             'numbers': elements.numbers.checked,
-            'specialCharacters' : elements.specialCharacters.checked
+            'specialCharacters' : elements.specialCharacters.checked,
+            'quote': false 
         })
     })
     let text = await response.json();

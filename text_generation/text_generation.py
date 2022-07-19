@@ -1,12 +1,18 @@
 import random
 
 def generateText(json, length):
+    if (json['quote']):
+        return getQuote(json['quote']['size'])
+
     wordset = _getTruncatedWordset(json['wordset'], json['numWords'])
     finalWordList = [_generateWord(wordset, json['numbers'], json['specialCharacters']) for _ in range(length)]
     if (json['punctuation']):
         _punctuateList(finalWordList)
 
     return ' '.join(finalWordList)
+
+def getQuote(size):
+    pass
 
 def _getTruncatedWordset(wordset, numWords):
     with open('text_generation/' + wordset + '_words.txt') as words:
@@ -15,18 +21,13 @@ def _getTruncatedWordset(wordset, numWords):
 
 def _generateWord(wordset, numbers=False, specialChars=False):
     words = [random.choice(wordset), _generateNumber(), _generateSpecialCharWord()]     
-    return random.choices(words, weights=getWeights(numbers, specialChars), k=1)[0]
+    return random.choices(words, weights=_getWeights(numbers, specialChars), k=1)[0]
 
 
-def getWeights(numbers, specialChars):
-    if (numbers and specialChars):
-        return [6, 2, 2]
-    if (numbers):
-        return [8, 2, 0]
-    if (specialChars):
-        return [8, 0, 2]
-    
-    return [1, 0, 0]
+def _getWeights(numbers, specialChars):
+    numWeight = 2 if numbers else 0
+    charWeight = 2 if specialChars else 0
+    return [10 - (numWeight + charWeight), numWeight, charWeight]
 
 
 def _generateNumber():
@@ -40,7 +41,7 @@ def _generateSpecialCharWord():
 def _punctuateList(wordList):
     wordList[0] = wordList[0].capitalize()
     for i in range(1, len(wordList), 2):
-        if (random.choices([True, False], weights=[6, 4], k=1)[0]):
+        if (random.choice([True, False])):
             random.choice([_surroundWord, _endWord, _endSentence])(wordList, i)
 
 
@@ -55,7 +56,7 @@ def _endWord(wordList, index):
 
 
 def _endSentence(wordList, index):
-    punc = random.choice(['.', '!', '?'])
+    punc = random.choices(['.', '!', '?'] ,weights=[3, 1, 1])[0]
     wordList[index] = wordList[index] + punc
     if (index + 1 < len(wordList)):
         wordList[index + 1] = wordList[index + 1].capitalize()
