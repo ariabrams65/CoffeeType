@@ -2,25 +2,15 @@ import random
 
 def generateText(json, length):
     wordset = _getTruncatedWordset(json['wordset'], json['numWords'])
-    finalWordList = []
-    for _ in range(length):
-        finalWordList.append(_generateWord(wordset, json['numbers'], json['specialCharacters']))
-
+    finalWordList = [_generateWord(wordset, json['numbers'], json['specialCharacters']) for _ in range(length)]
     if (json['punctuation']):
         _punctuateList(finalWordList)
 
     return ' '.join(finalWordList)
 
-
 def _getTruncatedWordset(wordset, numWords):
-    wordList = []
     with open('text_generation/' + wordset + '_words.txt') as words:
-        for index, word in enumerate(words):
-            if (index == numWords):
-                break
-            wordList.append(word.strip())
-
-    return wordList
+        return [word.strip() for i, word in enumerate(words) if i < numWords]
 
 
 def _generateWord(wordset, numbers=False, specialChars=False):
