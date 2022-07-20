@@ -35,6 +35,10 @@ li a:hover {
     float: right;
 }
 
+.option-list {
+    margin-left: 20px;
+}
+
 .option-list ul {
     list-style-type: none;
     padding: 0;
@@ -44,11 +48,6 @@ li a:hover {
 
 .option-list ul li {
     text-align: center;
-    margin: 0 0 30px 0;    
-    padding: 20px;
-    color: white;
-    background-color: rgb(40, 39, 39);
-    border-radius: 10px;
 }
 
 .typing {
@@ -60,6 +59,7 @@ li a:hover {
 .text {
     background-color: white;
     margin: auto;
+    margin-bottom: 5px;
     border: 3px solid #021f51 ;
     height: 250px;
     width: 80%;
@@ -75,19 +75,20 @@ li a:hover {
 }
 
 .text p {
-    font-size: 30px;
+    font-size: 40px;
+    margin-top: 10px
 }
 
 .flex-container {
     display: flex;
     width: 100%;
-    margin-top: 16px;
+    margin-top: 50px;
 }
 
 .under-text {
     display: block;
     height: 50px;
-    width: 350px;
+    width: 400px;
     margin: auto;
 }
 
@@ -96,13 +97,24 @@ li a:hover {
     display: block;
     height: 100%;
     width: 200px;
+    margin-right: 8px;
     font-size: 25px;
     float: left;
+    border-radius: 5px;
 }
 
 #reload-button {
     display: inline-block;
     height: 100%;
+
+    background-color: #7a7e7a;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 20px;
+    border-radius: 5px;
 }
 
 #timer {
@@ -111,9 +123,34 @@ li a:hover {
     margin: 0;
     font-size: 50px;
     font-family: Arial;
+    font-weight: bold;
     color: rgb(0, 0, 0);
+
 }
 
 .highlight {
     background-color: rgb(203, 201, 201)
+}
+
+.option-list .pressed {
+       background-color: #155a17;
+}
+
+.option-list button, .select {
+    background-color: #7a7e7a;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+
+    margin: 0 0 30px 0;    
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.option-list button:hover, .option-list select:hover, #reload-button:hover {
+    background-color: #4e504e;
 }

@@ -30,10 +30,14 @@ function TextData() {
 function assignEventListeners() {
     let elements = getAllInteractiveElements();
 
+    elements.numbers.addEventListener('click', toggleButton);
+    elements.punctuation.addEventListener('click', toggleButton);
+    elements.specialCharacters.addEventListener('click', toggleButton);
+
     elements.wordset.addEventListener('change', resetTest);
-    elements.punctuation.addEventListener('change', resetTest);
-    elements.numbers.addEventListener('change', resetTest);
-    elements.specialCharacters.addEventListener('change', resetTest);
+    elements.punctuation.addEventListener('click', resetTest);
+    elements.numbers.addEventListener('click', resetTest);
+    elements.specialCharacters.addEventListener('click', resetTest);
     elements.reloadButton.addEventListener('click', resetTest);
     elements.window.addEventListener('resize', reloadText);
     elements.window.addEventListener('DOMContentLoaded', changeText);
@@ -42,8 +46,12 @@ function assignEventListeners() {
 }
 
 
+function toggleButton(event) {
+    event.currentTarget.classList.toggle('pressed');
+}
+
+
 function resetTest(event) {
-    console.log(event.currentTarget)
     clearInterval(event.currentTarget.textData.intervalId);
     event.currentTarget.textData.reset();
     document.getElementById('timer').innerHTML = document.getElementById('duration').value;
@@ -261,9 +269,9 @@ async function requestText() {
         body: JSON.stringify({
             'numWords': Number(elements.wordset.value),
             'wordset': elements.wordset.options[elements.wordset.selectedIndex].dataset.wordset,
-            'punctuation': elements.punctuation.checked,
-            'numbers': elements.numbers.checked,
-            'specialCharacters' : elements.specialCharacters.checked,
+            'punctuation': elements.punctuation.classList.contains('pressed'),
+            'numbers': elements.numbers.classList.contains('pressed'),
+            'specialCharacters' : elements.specialCharacters.classList.contains('pressed'),
             'quote': false 
         })
     })

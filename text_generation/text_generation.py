@@ -11,8 +11,10 @@ def generateText(json, length):
 
     return ' '.join(finalWordList)
 
+
 def getQuote(size):
     pass
+
 
 def _getTruncatedWordset(wordset, numWords):
     with open('text_generation/' + wordset + '_words.txt') as words:
