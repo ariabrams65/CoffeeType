@@ -1,9 +1,10 @@
 body {
-    background-color: rgb(45, 57, 77);
+    background-color: #3c4455;
     margin: 15px;
 }
 
 .navbar {
+    display: none;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -57,14 +58,18 @@ li a:hover {
 }
 
 .text {
-    background-color: white;
+    background-color: #a5aebe;
     margin: auto;
-    margin-bottom: 5px;
-    border: 3px solid #021f51 ;
+    margin-bottom: 8px;
     height: 250px;
     width: 80%;
-    border-radius: 10px;
+    max-width: 900px;
+    border-radius: 8px;
     text-align: center;
+    overflow: auto;
+    font-size: 33px;
+    font-family: 'Roboto Mono';
+    color: #3c4455;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -72,11 +77,6 @@ li a:hover {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-.text p {
-    font-size: 40px;
-    margin-top: 10px
 }
 
 .flex-container {
@@ -95,24 +95,32 @@ li a:hover {
 #text-input {
     box-sizing: border-box;
     display: block;
+    background-color: #a5aebe;
     height: 100%;
     width: 200px;
     margin-right: 8px;
     font-size: 25px;
     float: left;
     border-radius: 5px;
+
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
 }
 
 #reload-button {
     display: inline-block;
     height: 100%;
+    line-height: 100%;
 
-    background-color: #7a7e7a;
+    background-color: #ea567d;
     border: none;
-    color: white;
+    color: #3c4455;
     text-align: center;
     text-decoration: none;
     font-size: 16px;
+    font-weight: bold;
     padding: 20px;
     border-radius: 5px;
 }
@@ -133,24 +141,25 @@ li a:hover {
 }
 
 .option-list .pressed {
-       background-color: #155a17;
+       background-color: #ea567d;
 }
 
 .option-list button, .select {
-    background-color: #7a7e7a;
+    background-color: #a5aebe;
     border: none;
-    color: white;
+    color: #3c4455;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    font-weight: bold;
 
     margin: 0 0 30px 0;    
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     width: 100%;
 }
 
 .option-list button:hover, .option-list select:hover, #reload-button:hover {
-    background-color: #4e504e;
+    filter: brightness(.8);
 }

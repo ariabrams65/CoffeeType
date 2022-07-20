@@ -165,10 +165,16 @@ async function changeText(event) {
     let words = (await requestText()).split(' ');
     ct.textData.text = [];
     for (let word of words) {
-        ct.textData.text.push({word: word, color: 'black'});
+        ct.textData.text.push({word: word, color: getTextColor()});
     }
     ct.textData.text[0].current = true;
     reloadText({currentTarget: ct});
+}
+
+function getTextColor() {
+    let fontEl = document.querySelector('.text');
+    let style = window.getComputedStyle(fontEl, null);
+    return style.getPropertyValue('color');
 }
 
 
