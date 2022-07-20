@@ -47,7 +47,7 @@ function assignEventListeners() {
 
 
 function toggleButton(event) {
-    event.currentTarget.classList.toggle('pressed');
+    event.currentTarget.classList.toggle('color3');
 }
 
 
@@ -172,7 +172,7 @@ async function changeText(event) {
 }
 
 function getTextColor() {
-    let fontEl = document.querySelector('.text');
+    let fontEl = document.getElementById('text-box');
     let style = window.getComputedStyle(fontEl, null);
     return style.getPropertyValue('color');
 }
@@ -252,7 +252,7 @@ function stringFits(str) {
 
 
 function getVisualLength(str) {
-    let fontEl = document.querySelector('.text p');
+    let fontEl = document.querySelector('#text-box p');
     let style = window.getComputedStyle(fontEl, null);
     let font = style.getPropertyValue('font-family');
     let fontSize = style.getPropertyValue('font-size');
@@ -275,9 +275,9 @@ async function requestText() {
         body: JSON.stringify({
             'numWords': Number(elements.wordset.value),
             'wordset': elements.wordset.options[elements.wordset.selectedIndex].dataset.wordset,
-            'punctuation': elements.punctuation.classList.contains('pressed'),
-            'numbers': elements.numbers.classList.contains('pressed'),
-            'specialCharacters' : elements.specialCharacters.classList.contains('pressed'),
+            'punctuation': elements.punctuation.classList.contains('color3'),
+            'numbers': elements.numbers.classList.contains('color3'),
+            'specialCharacters' : elements.specialCharacters.classList.contains('color3'),
             'quote': false 
         })
     })
