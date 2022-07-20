@@ -76,9 +76,13 @@ function textInputHandler(event) {
         incrementWord(textData, input);
         event.currentTarget.value = '';
     } else if (input === '') { 
-        textData.text[textData.curWordIndex].color = 'black';
+        textData.text[textData.curWordIndex].color = getTextColor();
     } else {
-        colorWord(textData, isWordCorrect(input, textData));
+        if (!isWordCorrect(input, textData)) {
+            colorWord(textData, 'red');
+        } else {
+            colorWord(textData, getTextColor());
+        }
     }
     reloadText(event);
 }
@@ -88,9 +92,11 @@ function incrementWord(textData, input) {
         textData.firstVisibleWordIndex = textData.curWordIndex + 1;
     }
     let trimmedInput = input.trimEnd();
-    let bool = isWordCorrect(trimmedInput , textData, true);
-    bool ? textData.correctChars += trimmedInput.length : ++textData.incorrectWords;
-    colorWord(textData, bool);
+    let correct = isWordCorrect(trimmedInput , textData, true);
+    if (!correct) {
+        colorWord(textData, 'red');
+    }
+    correct ? textData.correctChars += trimmedInput.length : ++textData.incorrectWords;
     
     textData.text[textData.curWordIndex].current = false;
     ++textData.curWordIndex;
@@ -107,9 +113,8 @@ function isWordCorrect(word, textData, mustMatch=false) {
 }
 
 
-function colorWord(textData, colorGreen) {
-    textData.text[textData.curWordIndex].color =
-        colorGreen ? 'green' : 'red';
+function colorWord(textData, color) {
+    textData.text[textData.curWordIndex].color = color;
 }
 
 
@@ -239,7 +244,8 @@ function getLines(textData, numLines) {
 function getColoredWordAsStr(word) {
     if (word.current) {
         //return `<span style="color:${word.color}; text-decoration:underline">${word.word}</span>`;
-        return `<span style="color:${word.color}" class='highlight'>${word.word}</span>`;
+
+        return `<span style="color:${word.color}; background-color:#858585" class='highlight'>${word.word}</span>`;
         
     }
     return `<span style="color:${word.color}">${word.word}</span>`;
