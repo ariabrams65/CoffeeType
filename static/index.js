@@ -112,10 +112,13 @@ function incrementWord(textData, input) {
     } else {
         textData.correctChars += trimmedInput.length + 1 
     }
-    
-    textData.text[textData.curWordIndex].current = false;
-    ++textData.curWordIndex;
-    textData.text[textData.curWordIndex].current = true;
+    if (textData.curWordIndex === textData.text.length - 1) {
+        endTest(textData);
+    } else {
+        textData.text[textData.curWordIndex].current = false;
+        ++textData.curWordIndex;
+        textData.text[textData.curWordIndex].current = true;
+    }
 }
 
 
@@ -151,14 +154,18 @@ function startTest(textData) {
 
 
 function endTest(textData) {
-    let wmp = ((textData.correctChars / 5) / document.getElementById('duration').value) * 60;
+    console.log(elapsedTime());
+    let wmp = ((textData.correctChars / 5) / elapsedTime()) * 60;
     wmp = Math.round(wmp);
-    console.log(textData.correctChars, textData.charsTyped);
     let acc = Math.round((textData.correctChars / textData.charsTyped) * 100);
     let results = document.querySelector('#results p');
     results.innerHTML = `wmp: ${wmp}    accuracy: ${acc}%`;
     resetTest({currentTarget: {textData: textData}});
     
+}
+
+function elapsedTime() {
+    return document.getElementById('duration').value - document.getElementById('timer').innerHTML + 1;
 }
 
 
@@ -215,46 +222,18 @@ function getLines(textData, numLines) {
     return lines;
 }
 
+
 function getLine(textData, index) {
     let line = '';
     let HTMLLine = [];
     let text = textData.text;
-    for (; stringFits(line + text[index].word + ' '); ++index) {
+    for (; index < text.length && stringFits(line + text[index].word + ' '); ++index) {
         line += text[index].word + ' ';
         HTMLLine.push(getColoredWordAsHTML(text[index]));
     }
     textData.indexesOfLastWords.push(index - 1);
     return HTMLLine;
 }
-/*
-function getLines(textData, numLines) {
-    let lines = [];
-    let index = textData.firstVisibleWordIndex;
-    let text = textData.text;
-    textData.indexesOfLastWords = [];
-    for (let i = 0; i < numLines; ++i) {
-        let wordLine = '';
-        let line = '';      
-        while (true) {
-            let toAdd = text[index] ? text[index].word : '';
-            if (!stringFits(wordLine + toAdd + ' ')) {
-                break;
-            }
-            wordLine += toAdd + ' ';
-            if (toAdd) {
-                line += getColoredWordAsStr(text[index]) + ' ';
-            } else {
-                line += ' ';
-            }
-            ++index;
-        }
-        textData.indexesOfLastWords.push(index - 1);
-        lines.push(line);
-    }
-    textData.nextNonvisibleWordIndex = index;
-    return lines;
-}
-*/
 
 
 function getColoredWordAsHTML(word) {
