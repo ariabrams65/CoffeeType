@@ -14,7 +14,7 @@ function TextData() {
     this.nextNonvisibleWordIndex = 0;
     this.curWordIndex = 0;
     this.correctChars = 0;
-    this.incorrectWords = 0;
+    this.charsTyped = 0;
     this.testStarted = false;
     this.indexesOfLastWords = [];
     this.correctColor = getCorrectColor();
@@ -105,11 +105,13 @@ function incrementWord(textData, input) {
         textData.firstVisibleWordIndex = textData.curWordIndex + 1;
     }
     let trimmedInput = input.trimEnd();
+    textData.charsTyped += trimmedInput.length + 1;
     let correct = isWordCorrect(trimmedInput , textData, true);
-    if (!correct) {
+    if (!isWordCorrect(trimmedInput , textData, true)) {
         colorWord(textData, textData.incorrectColor);
+    } else {
+        textData.correctChars += trimmedInput.length + 1 
     }
-    correct ? textData.correctChars += trimmedInput.length : ++textData.incorrectWords;
     
     textData.text[textData.curWordIndex].current = false;
     ++textData.curWordIndex;
@@ -149,12 +151,13 @@ function startTest(textData) {
 
 
 function endTest(textData) {
-    const AVERAGE_WORD_LENGTH = 4.7;
-    let wmp = ((textData.correctChars / AVERAGE_WORD_LENGTH)
-        / document.getElementById('duration').value) * 60;
-    //todo
+    let wmp = ((textData.correctChars / 5) / document.getElementById('duration').value) * 60;
+    wmp = Math.round(wmp);
+    console.log(textData.correctChars, textData.charsTyped);
+    let acc = Math.round((textData.correctChars / textData.charsTyped) * 100);
+    let results = document.querySelector('#results p');
+    results.innerHTML = `wmp: ${wmp}    accuracy: ${acc}%`;
     resetTest({currentTarget: {textData: textData}});
-    alert('WMP: ' + Math.round(wmp))
     
 }
 

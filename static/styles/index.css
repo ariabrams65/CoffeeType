@@ -21,6 +21,7 @@ body {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    margin-top: 37px;
     width: 200px;
 }
 
@@ -40,11 +41,32 @@ body {
     flex: 1;
 }
 
+#text-box-results {
+    margin: auto;
+    width: 80%;
+    max-width: 900px;
+}
+
+#results {
+    float: right;
+    width: 500px;
+    margin: auto;
+    margin-bottom: 5px;
+}
+
+#results p {
+    margin: 0;
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    white-space:pre;
+}
+
 #text-box {
     margin: auto;
     margin-bottom: 8px;
     height: 250px;
-    width: 80%;
+    width: 100%;
     max-width: 900px;
     border-radius: 8px;
     text-align: center;
@@ -54,17 +76,18 @@ body {
 
 #under-text {
     height: 50px;
-    width: 400px;
+    width: 420px;
     margin: auto;
 }
 
 #text-input {
     height: 100%;    
-    width: 200px;
+    width: 250px;
     margin-right: 8px;
     font-size: 25px;
     border-radius: 5px; 
     border-style: hidden;
+    padding: 0;
 }
 
 #reload-button {

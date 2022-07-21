@@ -1,0 +1,27 @@
+body {
+    background-color:#5c5c64
+}
+
+.color1 {
+    color: #5c5c64
+}
+
+.color2 {
+    background-color: #f2f2f1
+}
+
+.color2-text {
+    color: #f2f2f1
+}
+
+.color3 {
+    background-color: #2c6ca4
+}
+
+.color3-text {
+    color: #2c6ca4
+}
+
+.highlight {
+    background-color:#858585;
+}
