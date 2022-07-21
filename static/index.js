@@ -205,20 +205,26 @@ function reloadText(event) {
 function getLines(textData, numLines) {
     let lines = [];
     let index = textData.firstVisibleWordIndex;
-    let text = textData.text;
     textData.indexesOfLastWords = [];
     for (let i = 0; i < numLines; ++i) {
-        let wordLine = '';
-        let line = '';      
-        for (; stringFits(wordLine + text[index].word + ' '); ++index) {
-            wordLine += text[index].word + ' ';
-            line += getColoredWordAsStr(text[index]) + ' ';
-        }
-        textData.indexesOfLastWords.push(index - 1);
-        lines.push(line);
+        let line = getLine(textData, index);
+        index += line.length;
+        lines.push(line.join(' '));
     }
     textData.nextNonvisibleWordIndex = index;
     return lines;
+}
+
+function getLine(textData, index) {
+    let line = '';
+    let HTMLLine = [];
+    let text = textData.text;
+    for (; stringFits(line + text[index].word + ' '); ++index) {
+        line += text[index].word + ' ';
+        HTMLLine.push(getColoredWordAsHTML(text[index]));
+    }
+    textData.indexesOfLastWords.push(index - 1);
+    return HTMLLine;
 }
 /*
 function getLines(textData, numLines) {
@@ -251,7 +257,7 @@ function getLines(textData, numLines) {
 */
 
 
-function getColoredWordAsStr(word) {
+function getColoredWordAsHTML(word) {
     if (word.current) {
         //return `<span style="color:${word.color}; text-decoration:underline">${word.word}</span>`;
 
