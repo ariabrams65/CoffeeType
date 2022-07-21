@@ -17,13 +17,25 @@ function TextData() {
     this.incorrectWords = 0;
     this.testStarted = false;
     this.indexesOfLastWords = [];
+    this.correctColor = getCorrectColor();
+    this.incorrectColor = getIncorrectColor();
     this.reset = () => {
         for (let prop in this) {
             if (prop != 'reset') {
                 this[prop] = 0;
             }
         }
+        this.correctColor = getCorrectColor();
+        this.incorrectColor = getIncorrectColor();
     }
+}
+
+function getCorrectColor() {
+    return getComputedStyle(document.querySelector('.color1')).color;
+}
+
+function getIncorrectColor() {
+    return getComputedStyle(document.querySelector('.color3')).backgroundColor;
 }
 
 
@@ -76,12 +88,13 @@ function textInputHandler(event) {
         incrementWord(textData, input);
         event.currentTarget.value = '';
     } else if (input === '') { 
-        textData.text[textData.curWordIndex].color = getTextColor();
+        textData.text[textData.curWordIndex].color = textData.correctColor;
     } else {
         if (!isWordCorrect(input, textData)) {
-            colorWord(textData, 'red');
+            colorWord(textData, textData.incorrectColor);
+
         } else {
-            colorWord(textData, getTextColor());
+            colorWord(textData, textData.correctColor);
         }
     }
     reloadText(event);
@@ -94,7 +107,7 @@ function incrementWord(textData, input) {
     let trimmedInput = input.trimEnd();
     let correct = isWordCorrect(trimmedInput , textData, true);
     if (!correct) {
-        colorWord(textData, 'red');
+        colorWord(textData, textData.incorrectColor);
     }
     correct ? textData.correctChars += trimmedInput.length : ++textData.incorrectWords;
     
@@ -170,16 +183,10 @@ async function changeText(event) {
     let words = (await requestText()).split(' ');
     ct.textData.text = [];
     for (let word of words) {
-        ct.textData.text.push({word: word, color: getTextColor()});
+        ct.textData.text.push({word: word, color: ct.textData.correctColor});
     }
     ct.textData.text[0].current = true;
     reloadText({currentTarget: ct});
-}
-
-function getTextColor() {
-    let fontEl = document.getElementById('text-box');
-    let style = window.getComputedStyle(fontEl, null);
-    return style.getPropertyValue('color');
 }
 
 
@@ -245,7 +252,7 @@ function getColoredWordAsStr(word) {
     if (word.current) {
         //return `<span style="color:${word.color}; text-decoration:underline">${word.word}</span>`;
 
-        return `<span style="color:${word.color}; background-color:#858585" class='highlight'>${word.word}</span>`;
+        return `<span style="color:${word.color}" class='highlight'>${word.word}</span>`;
         
     }
     return `<span style="color:${word.color}">${word.word}</span>`;

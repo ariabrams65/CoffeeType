@@ -1,18 +1,5 @@
 body {
-    background-color: #3c4455;
     margin: 35px;
-}
-
-.color1 {
-    color: #3c4455;
-}
-
-.color2 {
-    background-color: #a5aebe;
-}
-
-.color3 {
-    background-color: #ea567d;
 }
 
 .navbar {
@@ -26,6 +13,8 @@ body {
 
 #flex-container {
     display: flex;
+    
+    /*center vertically*/
 }
 
 #option-list {
@@ -33,7 +22,6 @@ body {
     padding: 0;
     margin: 0;
     width: 200px;
-    color: #3c4455;
 }
 
 #option-list .option {
@@ -98,11 +86,6 @@ body {
     font-size: 50px;
     font-family: Arial;
     font-weight: bold;
-    color: rgb(0, 0, 0);
-}
-
-.highlight {
-    background-color: rgb(203, 201, 201);
 }
 
 #option-list .option:hover, #reload-button:hover {
