@@ -9,13 +9,14 @@ function main() {
 }
 
 function TextData() {
+    this.startTime;
+    this.testStarted = false;
     this.text = [];
     this.firstVisibleWordIndex = 0;
     this.nextNonvisibleWordIndex = 0;
     this.curWordIndex = 0;
     this.correctChars = 0;
     this.charsTyped = 0;
-    this.testStarted = false;
     this.indexesOfLastWords = [];
     this.correctColor = getCorrectColor();
     this.incorrectColor = getIncorrectColor();
@@ -138,6 +139,7 @@ function colorWord(textData, color) {
 
 function startTest(textData) {
     textData.testStarted = true;
+    textData.startTime = new Date();
     let timer = document.getElementById('timer');
     let time = parseFloat(document.getElementById('duration').value);
 
@@ -154,8 +156,7 @@ function startTest(textData) {
 
 
 function endTest(textData) {
-    console.log(elapsedTime());
-    let wmp = ((textData.correctChars / 5) / elapsedTime()) * 60;
+    let wmp = ((textData.correctChars / 5) / elapsedTime(textData)) * 60;
     wmp = Math.round(wmp);
     let acc = Math.round((textData.correctChars / textData.charsTyped) * 100);
     let results = document.querySelector('#results p');
@@ -164,8 +165,8 @@ function endTest(textData) {
     
 }
 
-function elapsedTime() {
-    return document.getElementById('duration').value - document.getElementById('timer').innerHTML + 1;
+function elapsedTime(textData) {
+    return (new Date() - textData.startTime) / 1000;
 }
 
 
