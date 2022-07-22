@@ -42,26 +42,21 @@ function getIncorrectColor() {
 
 function assignEventListeners() {
     let elements = getAllInteractiveElements();
-
-    elements.numbers.addEventListener('click', toggleButton);
-    elements.punctuation.addEventListener('click', toggleButton);
-    elements.specialCharacters.addEventListener('click', toggleButton);
-    elements.numbers.addEventListener('click', unpressQuotes);
-    elements.punctuation.addEventListener('click', unpressQuotes);
-    elements.specialCharacters.addEventListener('click', unpressQuotes);
-    elements.quotes.addEventListener('click', toggleButton);
-    elements.quotes.addEventListener('click', unpressTextModifyingButtons);
-
+    addMultipleEvents(elements.window, ['resize', 'DOMContentLoaded'], [reloadText, changeText]);
     elements.wordset.addEventListener('change', resetTest);
-    elements.punctuation.addEventListener('click', resetTest);
-    elements.numbers.addEventListener('click', resetTest);
-    elements.quotes.addEventListener('click', resetTest);
-    elements.specialCharacters.addEventListener('click', resetTest);
-    elements.reloadButton.addEventListener('click', resetTest);
-    elements.window.addEventListener('resize', reloadText);
-    elements.window.addEventListener('DOMContentLoaded', changeText);
-    elements.textInput.addEventListener('input', textInputHandler);
     elements.duration.addEventListener('change', resetTest)
+    addMultipleEvents(elements.quotes, ['click', 'click', 'click'], [toggleButton, unpressTextModifyingButtons, resetTest]);
+    addMultipleEvents(elements.punctuation, ['click', 'click', 'click'], [toggleButton, resetTest, unpressQuotes]);
+    addMultipleEvents(elements.numbers, ['click', 'click', 'click'], [toggleButton, resetTest, unpressQuotes]);
+    addMultipleEvents(elements.specialCharacters, ['click', 'click', 'click'], [toggleButton, resetTest, unpressQuotes]);
+    elements.textInput.addEventListener('input', textInputHandler);
+    elements.reloadButton.addEventListener('click', resetTest);
+}
+
+function addMultipleEvents(element, events, handlers) {
+    for (let i = 0; i < events.length; ++i) {
+        element.addEventListener(events[i], handlers[i]);
+    }
 }
 
 function unpressQuotes() {
