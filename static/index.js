@@ -46,7 +46,11 @@ function assignEventListeners() {
     elements.numbers.addEventListener('click', toggleButton);
     elements.punctuation.addEventListener('click', toggleButton);
     elements.specialCharacters.addEventListener('click', toggleButton);
+    elements.numbers.addEventListener('click', unpressQuotes);
+    elements.punctuation.addEventListener('click', unpressQuotes);
+    elements.specialCharacters.addEventListener('click', unpressQuotes);
     elements.quotes.addEventListener('click', toggleButton);
+    elements.quotes.addEventListener('click', unpressTextModifyingButtons);
 
     elements.wordset.addEventListener('change', resetTest);
     elements.punctuation.addEventListener('click', resetTest);
@@ -60,6 +64,15 @@ function assignEventListeners() {
     elements.duration.addEventListener('change', resetTest)
 }
 
+function unpressQuotes() {
+    document.getElementById('quotes').classList.remove('color3');
+}
+
+function unpressTextModifyingButtons() {
+    document.getElementById('punctuation').classList.remove('color3');
+    document.getElementById('numbers').classList.remove('color3');
+    document.getElementById('special-characters').classList.remove('color3');
+}
 
 function toggleButton(event) {
     event.currentTarget.classList.toggle('color3');
