@@ -46,10 +46,12 @@ function assignEventListeners() {
     elements.numbers.addEventListener('click', toggleButton);
     elements.punctuation.addEventListener('click', toggleButton);
     elements.specialCharacters.addEventListener('click', toggleButton);
+    elements.quotes.addEventListener('click', toggleButton);
 
     elements.wordset.addEventListener('change', resetTest);
     elements.punctuation.addEventListener('click', resetTest);
     elements.numbers.addEventListener('click', resetTest);
+    elements.quotes.addEventListener('click', resetTest);
     elements.specialCharacters.addEventListener('click', resetTest);
     elements.reloadButton.addEventListener('click', resetTest);
     elements.window.addEventListener('resize', reloadText);
@@ -239,10 +241,7 @@ function getLine(textData, index) {
 
 function getColoredWordAsHTML(word) {
     if (word.current) {
-        //return `<span style="color:${word.color}; text-decoration:underline">${word.word}</span>`;
-
         return `<span style="color:${word.color}" class='highlight'>${word.word}</span>`;
-        
     }
     return `<span style="color:${word.color}">${word.word}</span>`;
 }
@@ -280,7 +279,7 @@ async function requestText() {
             'punctuation': elements.punctuation.classList.contains('color3'),
             'numbers': elements.numbers.classList.contains('color3'),
             'specialCharacters' : elements.specialCharacters.classList.contains('color3'),
-            'quote': false 
+            'quote': elements.quotes.classList.contains('color3') 
         })
     })
     let text = await response.json();
@@ -291,6 +290,7 @@ async function requestText() {
 function getTextModifyingElements() {
     return {
         'wordset': document.getElementById('wordset'),
+        'quotes': document.getElementById('quotes'),
         'punctuation': document.getElementById('punctuation'),
         'numbers': document.getElementById('numbers'),
         'specialCharacters' : document.getElementById('special-characters')

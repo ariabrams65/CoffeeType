@@ -18,5 +18,5 @@ def login():
 @views.route("/generate-text", methods=['POST'])
 def get_generated_text():
     json = request.get_json(force=True)
-    return jsonify({"text" : generateText(json, 30)});
+    return jsonify({"text" : generateText(json, 500)});
 

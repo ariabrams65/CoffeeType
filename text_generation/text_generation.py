@@ -1,8 +1,9 @@
 import random
+from quotes import getQuote
 
 def generateText(json, length):
     if (json['quote']):
-        return getQuote(json['quote']['size'])
+        return getQuote(150, 500)
 
     wordset = _getTruncatedWordset(json['wordset'], json['numWords'])
     finalWordList = [_generateWord(wordset, json['numbers'], json['specialCharacters']) for _ in range(length)]
@@ -10,10 +11,6 @@ def generateText(json, length):
         _punctuateList(finalWordList)
 
     return ' '.join(finalWordList)
-
-
-def getQuote(size):
-    pass
 
 
 def _getTruncatedWordset(wordset, numWords):
