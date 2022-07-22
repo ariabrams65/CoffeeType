@@ -14,10 +14,12 @@ function TextData() {
     this.text = [];
     this.firstVisibleWordIndex = 0;
     this.nextNonvisibleWordIndex = 0;
+    this.line1Index;
+    this.line2Index;
+    this.line3Index;
     this.curWordIndex = 0;
     this.correctChars = 0;
     this.charsTyped = 0;
-    this.indexesOfLastWords = [];
     this.correctColor = getCorrectColor();
     this.incorrectColor = getIncorrectColor();
     this.reset = () => {
@@ -111,7 +113,7 @@ function textInputHandler(event) {
 }
 
 function incrementWord(textData, input) {
-    if (textData.indexesOfLastWords.includes(textData.curWordIndex)) {
+    if (lastWordIndices(textData).includes(textData.curWordIndex)) {
         textData.firstVisibleWordIndex = textData.curWordIndex + 1;
     }
     let trimmedInput = input.trimEnd();
@@ -126,6 +128,11 @@ function incrementWord(textData, input) {
     } else {
         ++textData.curWordIndex;
     }
+}
+
+
+function lastWordIndices(textData) {
+    return [textData.line2Index-1, textData.line3Index-1, textData.nextNonvisibleWordIndex -1];
 }
 
 
@@ -207,37 +214,43 @@ async function changeText(event) {
 
 
 function resizeText(event) {
-    let line1 = document.getElementById('line1');
-    let line2 = document.getElementById('line2');
-    let line3 = document.getElementById('line3');
-    [line1.innerHTML, line2.innerHTML, line3.innerHTML] =
-        getHTMLLines(event.currentTarget.textData, 3);
+    let textData = event.currentTarget.textData;
+    calculateLines(textData);
+    redisplayText(textData);
 }
 
 
-function getHTMLLines(textData, numLines) {
-    let lines = [];
-    let index = textData.firstVisibleWordIndex;
-    textData.indexesOfLastWords = [];
-    for (let i = 0; i < numLines; ++i) {
-        let line = getHTMLLine(textData, index);
-        index += line.length;
-        lines.push(line.join(' '));
-    }
-    textData.nextNonvisibleWordIndex = index;
-    return lines;
+function redisplayText(textData) {
+    line1.innerHTML = getHTMLLine(textData.line1Index, textData.line2Index, textData);
+    line2.innerHTML = getHTMLLine(textData.line2Index, textData.line3Index, textData);
+    line3.innerHTML = getHTMLLine(textData.line3Index, textData.nextNonvisibleWordIndex, textData);
 }
 
 
-function getHTMLLine(textData, index) {
-    let line = '';
-    let HTMLLine = [];
+function calculateLines(textData) {
     let text = textData.text;
+    textData.line1Index = textData.firstVisibleWordIndex;
+    textData.line2Index = calculateNextLineIndex(textData.line1Index, text);
+    textData.line3Index = calculateNextLineIndex(textData.line2Index, text);
+    textData.nextNonvisibleWordIndex =
+        calculateNextLineIndex(textData.line3Index, text);
+}
+
+
+function calculateNextLineIndex(index, text) {
+    let line = '';
     for (; index < text.length && stringFits(line + text[index].word + ' '); ++index) {
         line += text[index].word + ' ';
-        HTMLLine.push(getColoredWordAsHTML(textData, index));
     }
-    textData.indexesOfLastWords.push(index - 1);
+    return index;
+}
+
+
+function getHTMLLine(startIndex, endIndex, textData) {
+    let HTMLLine = '';
+    for (; startIndex < endIndex; ++startIndex) {
+        HTMLLine += getColoredWordAsHTML(textData, startIndex) + ' ';
+    }
     return HTMLLine;
 }
 
