@@ -46,9 +46,9 @@ function assignEventListeners() {
     elements.wordset.addEventListener('change', resetTest);
     elements.duration.addEventListener('change', resetTest)
     addMultipleEvents(elements.quotes, ['click', 'click', 'click'], [toggleButton, unpressTextModifyingButtons, resetTest]);
-    addMultipleEvents(elements.punctuation, ['click', 'click', 'click'], [toggleButton, resetTest, unpressQuotes]);
-    addMultipleEvents(elements.numbers, ['click', 'click', 'click'], [toggleButton, resetTest, unpressQuotes]);
-    addMultipleEvents(elements.specialCharacters, ['click', 'click', 'click'], [toggleButton, resetTest, unpressQuotes]);
+    addMultipleEvents(elements.punctuation, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
+    addMultipleEvents(elements.numbers, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
+    addMultipleEvents(elements.specialCharacters, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
     elements.textInput.addEventListener('input', textInputHandler);
     elements.reloadButton.addEventListener('click', resetTest);
 }
@@ -86,14 +86,14 @@ function resetTest(event) {
 
 
 function textInputHandler(event) {
-    let textData = event.currentTarget.textData;
-    if (!textData.testStarted) {
-        startTest(textData);
-    }
     let input = event.currentTarget.value; 
     if (input === ' ') {
         event.currentTarget.value = '';
         return;
+    }
+    let textData = event.currentTarget.textData;
+    if (!textData.testStarted) {
+        startTest(textData);
     }
     if ((input[input.length - 1] === ' ') ||
     (textData.curWordIndex === textData.text.length - 1 && isWordCorrect(input, textData, true))) {
@@ -211,16 +211,16 @@ function resizeText(event) {
     let line2 = document.getElementById('line2');
     let line3 = document.getElementById('line3');
     [line1.innerHTML, line2.innerHTML, line3.innerHTML] =
-        getLines(event.currentTarget.textData, 3);
+        getHTMLLines(event.currentTarget.textData, 3);
 }
 
 
-function getLines(textData, numLines) {
+function getHTMLLines(textData, numLines) {
     let lines = [];
     let index = textData.firstVisibleWordIndex;
     textData.indexesOfLastWords = [];
     for (let i = 0; i < numLines; ++i) {
-        let line = getLine(textData, index);
+        let line = getHTMLLine(textData, index);
         index += line.length;
         lines.push(line.join(' '));
     }
@@ -229,7 +229,7 @@ function getLines(textData, numLines) {
 }
 
 
-function getLine(textData, index) {
+function getHTMLLine(textData, index) {
     let line = '';
     let HTMLLine = [];
     let text = textData.text;
