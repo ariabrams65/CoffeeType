@@ -42,7 +42,7 @@ function getIncorrectColor() {
 
 function assignEventListeners() {
     let elements = getAllInteractiveElements();
-    addMultipleEvents(elements.window, ['resize', 'DOMContentLoaded'], [reloadText, changeText]);
+    addMultipleEvents(elements.window, ['resize', 'DOMContentLoaded'], [resizeText, changeText]);
     elements.wordset.addEventListener('change', resetTest);
     elements.duration.addEventListener('change', resetTest)
     addMultipleEvents(elements.quotes, ['click', 'click', 'click'], [toggleButton, unpressTextModifyingButtons, resetTest]);
@@ -95,11 +95,10 @@ function textInputHandler(event) {
         event.currentTarget.value = '';
         return;
     }
-    if (input[input.length - 1] === ' ') {
+    if ((input[input.length - 1] === ' ') ||
+    (textData.curWordIndex === textData.text.length - 1 && isWordCorrect(input, textData, true))) {
         incrementWord(textData, input);
         event.currentTarget.value = '';
-    } else if (input === '') { 
-        textData.text[textData.curWordIndex].color = textData.correctColor;
     } else {
         if (!isWordCorrect(input, textData)) {
             colorWord(textData, textData.incorrectColor);
@@ -108,7 +107,7 @@ function textInputHandler(event) {
             colorWord(textData, textData.correctColor);
         }
     }
-    reloadText(event);
+    resizeText(event);
 }
 
 function incrementWord(textData, input) {
@@ -117,7 +116,6 @@ function incrementWord(textData, input) {
     }
     let trimmedInput = input.trimEnd();
     textData.charsTyped += trimmedInput.length + 1;
-    let correct = isWordCorrect(trimmedInput , textData, true);
     if (!isWordCorrect(trimmedInput , textData, true)) {
         colorWord(textData, textData.incorrectColor);
     } else {
@@ -126,9 +124,7 @@ function incrementWord(textData, input) {
     if (textData.curWordIndex === textData.text.length - 1) {
         endTest(textData);
     } else {
-        textData.text[textData.curWordIndex].current = false;
         ++textData.curWordIndex;
-        textData.text[textData.curWordIndex].current = true;
     }
 }
 
@@ -206,12 +202,11 @@ async function changeText(event) {
     for (let word of words) {
         ct.textData.text.push({word: word, color: ct.textData.correctColor});
     }
-    ct.textData.text[0].current = true;
-    reloadText({currentTarget: ct});
+    resizeText({currentTarget: ct});
 }
 
 
-function reloadText(event) {
+function resizeText(event) {
     let line1 = document.getElementById('line1');
     let line2 = document.getElementById('line2');
     let line3 = document.getElementById('line3');
@@ -240,15 +235,16 @@ function getLine(textData, index) {
     let text = textData.text;
     for (; index < text.length && stringFits(line + text[index].word + ' '); ++index) {
         line += text[index].word + ' ';
-        HTMLLine.push(getColoredWordAsHTML(text[index]));
+        HTMLLine.push(getColoredWordAsHTML(textData, index));
     }
     textData.indexesOfLastWords.push(index - 1);
     return HTMLLine;
 }
 
 
-function getColoredWordAsHTML(word) {
-    if (word.current) {
+function getColoredWordAsHTML(textData, wordIndex) {
+    let word = textData.text[wordIndex];
+    if (textData.curWordIndex === wordIndex) {
         return `<span style="color:${word.color}" class='highlight'>${word.word}</span>`;
     }
     return `<span style="color:${word.color}">${word.word}</span>`;
