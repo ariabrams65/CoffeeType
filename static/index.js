@@ -109,12 +109,13 @@ function textInputHandler(event) {
             colorWord(textData, textData.correctColor);
         }
     }
-    resizeText(event);
+    redisplayText(textData);
 }
 
 function incrementWord(textData, input) {
     if (lastWordIndices(textData).includes(textData.curWordIndex)) {
         textData.firstVisibleWordIndex = textData.curWordIndex + 1;
+        calculateLines(textData);
     }
     let trimmedInput = input.trimEnd();
     textData.charsTyped += trimmedInput.length + 1;
