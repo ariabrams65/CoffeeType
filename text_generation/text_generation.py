@@ -14,7 +14,7 @@ def generateText(json, length):
 
 
 def _getTruncatedWordset(wordset, numWords):
-    with open('text_generation/' + wordset + '_words.txt') as words:
+    with open('text_generation/' + wordset + '_words.txt', encoding='utf-8') as words:
         return [word.strip() for i, word in enumerate(words) if i < numWords]
 
 

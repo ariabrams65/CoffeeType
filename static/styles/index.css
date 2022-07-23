@@ -2,10 +2,6 @@ body {
     margin: 35px;
 }
 
-* {
-    box-sizing: border-box;
-}
-
 .navbar {
     display: none;
     list-style-type: none;
