@@ -1,0 +1,31 @@
+body {
+    background-color: #142c4c;
+}
+
+.text-color {
+    color: rgb(9, 9, 39);
+}
+
+.color2 {
+    background-color: #2b5b93;
+}
+
+.test-info {
+    color: #dcb428;
+}
+
+.color3 {
+    background-color: #dcb428;
+}
+
+.btn-text-color {
+    color: #142c4c;
+}
+
+.highlight {
+    background-color: #858585;
+}
+
+.dur-btn {
+    border-right: 4px solid #142c4c;
+}

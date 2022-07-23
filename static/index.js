@@ -47,13 +47,30 @@ function assignEventListeners() {
     addMultipleEvents(elements.window, ['resize', 'DOMContentLoaded'], [resizeText, changeText]);
     elements.wordset.addEventListener('change', resetTest);
     elements.duration.addEventListener('click', durationPressed);
-    //addMultipleEvents(elements.duration, ['click', 'click'], [durationPressed, resetTest]);
     addMultipleEvents(elements.quotes, ['click', 'click', 'click'], [toggleButton, unpressTextModifyingButtons, resetTest]);
     addMultipleEvents(elements.punctuation, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
     addMultipleEvents(elements.numbers, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
     addMultipleEvents(elements.specialCharacters, ['click', 'click', 'click',], [toggleButton, unpressQuotes, resetTest]);
     elements.textInput.addEventListener('input', textInputHandler);
     elements.reloadButton.addEventListener('click', resetTest);
+    elements.themes.addEventListener('click', changeTheme);
+}
+
+function changeTheme(event) {
+    let newTheme = event.target.value;
+    let themeColor = window.getComputedStyle(event.target, null).getPropertyValue('background-color');
+    let themeButton = document.getElementById('cur-theme-btn');
+    themeButton.innerHTML = newTheme;
+    themeButton.value = newTheme;
+    themeButton.style.backgroundColor = themeColor;
+    changeThemeHref(newTheme);
+}
+
+function changeThemeHref(newTheme) {
+    let theme = document.getElementById('theme');
+    let href = theme.href;
+    let themeIndex = href.lastIndexOf('/') + 1;
+    theme.setAttribute('href', href.slice(0, themeIndex) + newTheme + '.css');
 }
 
 function addMultipleEvents(element, events, handlers) {
@@ -235,6 +252,7 @@ function getAllInteractiveElements() {
     elements.window = window;
     elements.textInput = document.getElementById('text-input');
     elements.duration = document.getElementById('dur-btn-group');
+    elements.themes = document.getElementById('theme-dropup');
 
     return elements;
 }
