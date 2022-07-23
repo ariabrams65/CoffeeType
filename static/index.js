@@ -50,7 +50,7 @@ function assignEventListeners() {
     addMultipleEvents(elements.quotes, ['click', 'click', 'click'], [toggleButton, unpressTextModifyingButtons, resetTest]);
     addMultipleEvents(elements.punctuation, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
     addMultipleEvents(elements.numbers, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
-    addMultipleEvents(elements.specialCharacters, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
+    addMultipleEvents(elements.specialCharacters, ['click', 'click', 'click',], [toggleButton, unpressQuotes, resetTest]);
     elements.textInput.addEventListener('input', textInputHandler);
     elements.reloadButton.addEventListener('click', resetTest);
 }
@@ -72,7 +72,25 @@ function unpressTextModifyingButtons() {
 }
 
 function toggleButton(event) {
-    event.currentTarget.classList.toggle('color3');
+    let button = event.currentTarget;
+    button.classList.toggle('color3');
+    if (button.classList.contains('not-timed') && buttonPressed(button)) {
+        hideTimer();
+    } else {
+        showTimer();
+    }
+}
+
+function hideTimer() {   
+    document.getElementById('timer').style.display = 'none';
+}
+
+function showTimer() {
+    document.getElementById('timer').style.display = 'block';
+}
+
+function buttonPressed(button) {
+    return button.classList.contains('color3');
 }
 
 
@@ -95,7 +113,7 @@ function textInputHandler(event) {
     }
     let textData = event.currentTarget.textData;
     if (!textData.testStarted) {
-        startTest(textData);
+        startTest(textData, !buttonPressed(document.getElementById('quotes')));
     }
     if ((input[input.length - 1] === ' ') ||
     (textData.curWordIndex === textData.text.length - 1 && isWordCorrect(input, textData, true))) {
@@ -151,12 +169,14 @@ function colorWord(textData, color) {
 }
 
 
-function startTest(textData) {
+function startTest(textData, timed) {
     textData.testStarted = true;
     textData.startTime = new Date();
+    if (!timed) {
+        return;
+    }
     let timer = document.getElementById('timer');
     let time = parseFloat(document.getElementById('duration').value);
-
     textData.intervalId = setInterval(function() {
         --time;
         if (time === 0) {
@@ -294,10 +314,10 @@ async function requestText() {
         body: JSON.stringify({
             'numWords': Number(elements.wordset.value),
             'wordset': elements.wordset.options[elements.wordset.selectedIndex].dataset.wordset,
-            'punctuation': elements.punctuation.classList.contains('color3'),
-            'numbers': elements.numbers.classList.contains('color3'),
-            'specialCharacters' : elements.specialCharacters.classList.contains('color3'),
-            'quote': elements.quotes.classList.contains('color3') 
+            'punctuation': buttonPressed(elements.punctuation),
+            'numbers': buttonPressed(elements.numbers),
+            'specialCharacters' : buttonPressed(elements.specialCharacters),
+            'quote': buttonPressed(elements.quotes)
         })
     })
     let text = await response.json();
