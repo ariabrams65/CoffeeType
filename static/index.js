@@ -46,7 +46,7 @@ function assignEventListeners() {
     let elements = getAllInteractiveElements();
     addMultipleEvents(elements.window, ['resize', 'DOMContentLoaded'], [resizeText, changeText]);
     elements.wordset.addEventListener('change', resetTest);
-    elements.duration.addEventListener('change', resetTest)
+    addMultipleEvents(elements.duration, ['click', 'click'], [durationPressed, resetTest]);
     addMultipleEvents(elements.quotes, ['click', 'click', 'click'], [toggleButton, unpressTextModifyingButtons, resetTest]);
     addMultipleEvents(elements.punctuation, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
     addMultipleEvents(elements.numbers, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
@@ -59,6 +59,16 @@ function addMultipleEvents(element, events, handlers) {
     for (let i = 0; i < events.length; ++i) {
         element.addEventListener(events[i], handlers[i]);
     }
+}
+
+function durationPressed(event) {
+    let durButtons= event.currentTarget.querySelectorAll('.dur-btn');
+    for (let durButton of durButtons) {
+        if (durButton !== event.target) {
+            durButton.classList.remove('color3');
+        }
+    }
+    event.target.classList.add('color3');
 }
 
 function unpressQuotes() {
@@ -93,11 +103,15 @@ function buttonPressed(button) {
     return button.classList.contains('color3');
 }
 
+function getDuration() {
+    return document.querySelector('#dur-btn-group .color3').value;
+}
+
 
 function resetTest(event) {
     clearInterval(event.currentTarget.textData.intervalId);
     event.currentTarget.textData.reset();
-    document.getElementById('timer').innerHTML = document.getElementById('duration').value;
+    document.getElementById('timer').innerHTML = getDuration(); 
     changeText(event);
     let textInput = document.getElementById('text-input');
     textInput.value = '';
@@ -176,7 +190,7 @@ function startTest(textData, timed) {
         return;
     }
     let timer = document.getElementById('timer');
-    let time = parseFloat(document.getElementById('duration').value);
+    let time = parseFloat(getDuration());
     textData.intervalId = setInterval(function() {
         --time;
         if (time === 0) {
@@ -196,7 +210,6 @@ function endTest(textData) {
     let results = document.querySelector('#results p');
     results.innerHTML = `wmp: ${wmp}    accuracy: ${acc}%`;
     resetTest({currentTarget: {textData: textData}});
-    
 }
 
 function elapsedTime(textData) {
@@ -217,7 +230,7 @@ function getAllInteractiveElements() {
     elements.reloadButton = document.getElementById('reload-button');
     elements.window = window;
     elements.textInput = document.getElementById('text-input');
-    elements.duration = document.getElementById('duration');
+    elements.duration = document.getElementById('dur-btn-group');
 
     return elements;
 }

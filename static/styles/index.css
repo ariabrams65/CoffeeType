@@ -37,6 +37,27 @@ body {
     font-weight: bold;
 }
 
+#dur-btn-group {
+    display: inline-flex;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    width: 200px;
+
+}
+
+.dur-btn {
+    padding: 20px 14px;
+    outline: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dur-btn:last-child {
+    border-right: none;
+}
+
 #typing {
     flex: 1;
 }
@@ -111,6 +132,7 @@ body {
     font-weight: bold;
 }
 
-#option-list .option:hover, #reload-button:hover {
+#option-list .option:hover, #reload-button:hover, .dur-btn:hover {
     filter: brightness(.8);
+    cursor: pointer;
 }
