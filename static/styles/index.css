@@ -2,6 +2,10 @@ body {
     margin: 35px;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 .navbar {
     display: none;
     list-style-type: none;
@@ -13,8 +17,6 @@ body {
 
 #flex-container {
     display: flex;
-    
-    /*center vertically*/
 }
 
 #option-list {
@@ -22,7 +24,7 @@ body {
     padding: 0;
     margin: 0;
     margin-top: 37px;
-    width: 200px;
+    width: 210px;
 }
 
 #option-list .option {
@@ -42,12 +44,13 @@ body {
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 30px;
-    width: 200px;
-
+    width: 100%;
 }
 
 .dur-btn {
-    padding: 20px 14px;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
     outline: none;
     border: none;
     font-size: 16px;

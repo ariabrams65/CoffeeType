@@ -46,7 +46,8 @@ function assignEventListeners() {
     let elements = getAllInteractiveElements();
     addMultipleEvents(elements.window, ['resize', 'DOMContentLoaded'], [resizeText, changeText]);
     elements.wordset.addEventListener('change', resetTest);
-    addMultipleEvents(elements.duration, ['click', 'click'], [durationPressed, resetTest]);
+    elements.duration.addEventListener('click', durationPressed);
+    //addMultipleEvents(elements.duration, ['click', 'click'], [durationPressed, resetTest]);
     addMultipleEvents(elements.quotes, ['click', 'click', 'click'], [toggleButton, unpressTextModifyingButtons, resetTest]);
     addMultipleEvents(elements.punctuation, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
     addMultipleEvents(elements.numbers, ['click', 'click', 'click'], [toggleButton, unpressQuotes, resetTest]);
@@ -69,6 +70,9 @@ function durationPressed(event) {
         }
     }
     event.target.classList.add('color3');
+    if (!event.currentTarget.textData.testStarted) {
+        document.getElementById('timer').innerHTML = event.target.value;
+    }
 }
 
 function unpressQuotes() {
