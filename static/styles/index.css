@@ -33,6 +33,7 @@ body {
     text-align: center;
     font-size: 16px;
     font-weight: bold;
+    color: inherit;
 }
 
 #dur-btn-group {
@@ -41,6 +42,7 @@ body {
     overflow: hidden;
     margin-bottom: 30px;
     width: 100%;
+    color: inherit;
 }
 
 .dur-btn {
@@ -51,6 +53,7 @@ body {
     border: none;
     font-size: 16px;
     font-weight: bold;
+    color: inherit;
 }
 
 .dur-btn:last-child {

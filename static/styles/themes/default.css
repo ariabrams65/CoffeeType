@@ -2,7 +2,7 @@ body {
     background-color: #3c4455;
 }
 
-.color1 {
+.text-color {
     color: #3c4455;
 }
 
@@ -10,7 +10,7 @@ body {
     background-color: #a5aebe;
 }
 
-.color2-text {
+.test-info {
     color: #a5aebe;
 }
 
@@ -18,8 +18,8 @@ body {
     background-color: #ea567d;
 }
 
-.color3-text {
-    color: #ea567d;
+.btn-text-color {
+    color: #3c4455
 }
 
 .highlight {
@@ -28,8 +28,4 @@ body {
 
 .dur-btn {
     border-right: 4px solid #3c4455;
-}
-
-#wordset-content {
-    background-color: #a5aebe;
 }

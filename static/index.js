@@ -34,7 +34,7 @@ function TextData() {
 }
 
 function getCorrectColor() {
-    return getComputedStyle(document.querySelector('.color1')).color;
+    return getComputedStyle(document.querySelector('.text-color')).color;
 }
 
 function getIncorrectColor() {
