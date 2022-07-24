@@ -11,11 +11,12 @@
     {% endblock %}
 </head>
 <body>
-    <ul class="navbar">
-        <li class="float-left"><a href="{{ url_for('views.home') }}">Home</a></li>
-        <li class="float-left"><a href="{{ url_for('views.settings') }}">Settings</a></li>
-        <li class="float-right"><a class="active" href="{{ url_for('views.login') }}">Login</a></li>
-    </ul>
+    <div id="navbar">
+        <h1 id="title" class="test-info">
+            <span class="coffee-color">Coffee</span>
+            <span class="type-color">Type</span>
+        </h1>
+    </div> 
     {% block content %} 
     {% endblock %}
 </body>

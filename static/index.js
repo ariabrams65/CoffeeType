@@ -204,7 +204,7 @@ function startTest(timed) {
 
 function endTest() {
     let wpm = ((testData.correctChars / 5) / elapsedTime()) * 60;
-    wpm = Math.round(wmp);
+    wpm = Math.round(wpm);
     let acc = Math.round((testData.correctChars / testData.charsTyped) * 100);
     let results = document.querySelector('#results p');
     results.innerHTML = `wpm: ${wpm}    accuracy: ${acc}%`;

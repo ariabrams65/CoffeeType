@@ -1,0 +1,35 @@
+body {
+    background-color: rgb(34, 33, 33);
+}
+
+.text-color {
+    color: black;
+}
+
+.color2 {
+    background-color: #e66e36;
+}
+
+.test-info {
+    color: white;
+}
+
+.color3 {
+    background-color: #5f206b;
+}
+
+.btn-text-color {
+    color: black;
+}
+
+.highlight {
+    background-color: #c44307;
+}
+
+.dur-btn {
+    border-right: 4px solid rgb(34, 33, 33);
+}
+
+.incorrect-color {
+    color: white;
+}

@@ -2,13 +2,15 @@ body {
     margin: 35px;
 }
 
-.navbar {
-    display: none;
-    list-style-type: none;
+#navbar {
+}
+
+#title {
+    display: inline-block;
     margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: rgb(40, 39, 39);
+    font-size: 50px;
+    font-weight: 1000;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 #flex-container {
@@ -82,6 +84,7 @@ body {
     float: right;
     font-size: 30px;
     font-weight: bold;
+    font-family: sans-serif;
     white-space:pre;
 }
 
@@ -208,4 +211,9 @@ body {
 #sunscorched {
     background-color: #ffe884;
     color: #38496a;
+}
+
+#halloween {
+    background-color: #eb6123;
+    color: black;
 }
