@@ -20,16 +20,12 @@ function TextData() {
     this.curWordIndex = 0;
     this.correctChars = 0;
     this.charsTyped = 0;
-    this.correctColor = getCorrectColor();
-    this.incorrectColor = getIncorrectColor();
     this.reset = () => {
         for (let prop in this) {
             if (prop != 'reset') {
                 this[prop] = 0;
             }
         }
-        this.correctColor = getCorrectColor();
-        this.incorrectColor = getIncorrectColor();
     }
 }
 
@@ -64,6 +60,7 @@ function changeTheme(event) {
     themeButton.value = newTheme;
     themeButton.style.backgroundColor = themeColor;
     changeThemeHref(newTheme);
+    redisplayText(event.currentTarget.textData);
 }
 
 function changeThemeHref(newTheme) {
@@ -156,10 +153,9 @@ function textInputHandler(event) {
         event.currentTarget.value = '';
     } else {
         if (!isWordCorrect(input, textData)) {
-            colorWord(textData, textData.incorrectColor);
-
+            textData[textData.curWordIndex].correct = false;
         } else {
-            colorWord(textData, textData.correctColor);
+            textData[textData.curWordIndex].correct = true;
         }
     }
     redisplayText(textData);
@@ -173,7 +169,7 @@ function incrementWord(textData, input) {
     let trimmedInput = input.trimEnd();
     textData.charsTyped += trimmedInput.length + 1;
     if (!isWordCorrect(trimmedInput , textData, true)) {
-        colorWord(textData, textData.incorrectColor);
+        textData[textData.curWordIndex].correct = false;
     } else {
         textData.correctChars += trimmedInput.length + 1 
     }
@@ -196,11 +192,6 @@ function isWordCorrect(word, textData, mustMatch=false) {
         return word === correctWord;
     }
     return correctWord.slice(0, word.length) === word;
-}
-
-
-function colorWord(textData, color) {
-    textData.text[textData.curWordIndex].color = color;
 }
 
 
@@ -263,7 +254,7 @@ async function changeText(event) {
     let words = (await requestText()).split(' ');
     ct.textData.text = [];
     for (let word of words) {
-        ct.textData.text.push({word: word, color: ct.textData.correctColor});
+        ct.textData.text.push({word: word, correct: true});
     }
     resizeText({currentTarget: ct});
 }
@@ -313,10 +304,11 @@ function getHTMLLine(startIndex, endIndex, textData) {
 
 function getColoredWordAsHTML(textData, wordIndex) {
     let word = textData.text[wordIndex];
+    let color = word.correct ? getCorrectColor() : getIncorrectColor();
     if (textData.curWordIndex === wordIndex) {
-        return `<span style="color:${word.color}" class='highlight'>${word.word}</span>`;
+        return `<span style="color:${color}" class='highlight'>${word.word}</span>`;
     }
-    return `<span style="color:${word.color}">${word.word}</span>`;
+    return `<span style="color:${color}">${word.word}</span>`;
 }
 
 
