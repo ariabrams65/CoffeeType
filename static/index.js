@@ -53,9 +53,15 @@ function changeThemeHref(newTheme) {
     let theme = document.getElementById('theme');
     let href = theme.href;
     let themeIndex = href.lastIndexOf('/') + 1;
-    let newHref = href.slice(0, themeIndex) + newTheme + '.css';
-    theme.setAttribute('href', href.slice(0, themeIndex) + newTheme + '.css');
-    theme.onload = redisplayText;
+    let link = document.createElement('link');
+    link.id = 'theme';
+    link.rel = 'stylesheet';
+    link.href = href.slice(0, themeIndex) + newTheme + '.css';
+    document.head.appendChild(link);
+    link.onload = () => {
+        theme.remove();
+        redisplayText()
+    }
 }
 
 function addMultipleEvents(element, events, handlers) {
