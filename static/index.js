@@ -25,7 +25,6 @@ function getIncorrectColor() {
     return getComputedStyle(document.querySelector('.color3')).backgroundColor;
 }
 
-
 function assignEventListeners() {
     let elements = getAllInteractiveElements();
     addMultipleEvents(elements.window, ['resize', 'DOMContentLoaded'], [resizeText, changeText]);
@@ -113,7 +112,6 @@ function getDuration() {
     return document.querySelector('#dur-btn-group .color3').value;
 }
 
-
 function resetTest() {
     clearInterval(testData.intervalId);
     testData = new TestData();
@@ -123,7 +121,6 @@ function resetTest() {
     textInput.value = '';
     textInput.focus();
 }
-
 
 function textInputHandler(event) {
     let input = event.currentTarget.value; 
@@ -167,11 +164,9 @@ function incrementWord(input) {
     }
 }
 
-
 function lastWordIndices() {
     return [testData.line2Index-1, testData.line3Index-1, testData.nextNonvisibleWordIndex -1];
 }
-
 
 function isWordCorrect(word, mustMatch=false) {
     let correctWord = testData.text[testData.curWordIndex].word;
@@ -180,7 +175,6 @@ function isWordCorrect(word, mustMatch=false) {
     }
     return correctWord.slice(0, word.length) === word;
 }
-
 
 function startTest(timed) {
     testData.testStarted = true;
@@ -200,7 +194,6 @@ function startTest(timed) {
         }
     }, 1000);
 }
-
 
 function endTest() {
     let wmp = ((testData.correctChars / 5) / elapsedTime()) * 60;
@@ -226,7 +219,6 @@ function getAllInteractiveElements() {
     return elements;
 }
 
-
 async function changeText() {
     let words = (await requestText()).split(' ');
     testData.text = [];
@@ -236,19 +228,16 @@ async function changeText() {
     resizeText();
 }
 
-
 function resizeText() {
     calculateLines();
     redisplayText();
 }
-
 
 function redisplayText() {
     line1.innerHTML = getHTMLLine(testData.line1Index, testData.line2Index);
     line2.innerHTML = getHTMLLine(testData.line2Index, testData.line3Index);
     line3.innerHTML = getHTMLLine(testData.line3Index, testData.nextNonvisibleWordIndex);
 }
-
 
 function calculateLines() {
     testData.line1Index = testData.firstVisibleWordIndex;
@@ -257,7 +246,6 @@ function calculateLines() {
     testData.nextNonvisibleWordIndex =
         calculateNextLineIndex(testData.line3Index);
 }
-
 
 function calculateNextLineIndex(index) {
     let text = testData.text;
@@ -268,7 +256,6 @@ function calculateNextLineIndex(index) {
     return index;
 }
 
-
 function getHTMLLine(startIndex, endIndex) {
     let HTMLLine = '';
     for (; startIndex < endIndex; ++startIndex) {
@@ -276,7 +263,6 @@ function getHTMLLine(startIndex, endIndex) {
     }
     return HTMLLine;
 }
-
 
 function getColoredWordAsHTML(wordIndex) {
     let word = testData.text[wordIndex];
@@ -287,11 +273,9 @@ function getColoredWordAsHTML(wordIndex) {
     return `<span style="color:${color}">${word.word}</span>`;
 }
 
-
 function stringFits(str) {
    return getVisualLength(str) < document.getElementById('text-box').clientWidth;
 }
-
 
 function getVisualLength(str) {
     let fontEl = document.querySelector('#text-box p');
@@ -305,7 +289,6 @@ function getVisualLength(str) {
     const metrics = context.measureText(str);
     return metrics.width;
 }
-
 
 async function requestText() {
     const elements = getTextModifyingElements();
@@ -326,7 +309,6 @@ async function requestText() {
     let text = await response.json();
     return text["text"];
 }
-
 
 function getTextModifyingElements() {
     return {
