@@ -22,7 +22,7 @@ function getCorrectColor() {
 }
 
 function getIncorrectColor() {
-    return getComputedStyle(document.querySelector('.color3')).backgroundColor;
+    return getComputedStyle(document.querySelector('.incorrect-color')).color;
 }
 
 function assignEventListeners() {
@@ -47,14 +47,15 @@ function changeTheme(event) {
     themeButton.value = newTheme;
     themeButton.style.backgroundColor = themeColor;
     changeThemeHref(newTheme);
-    redisplayText();
 }
 
 function changeThemeHref(newTheme) {
     let theme = document.getElementById('theme');
     let href = theme.href;
     let themeIndex = href.lastIndexOf('/') + 1;
+    let newHref = href.slice(0, themeIndex) + newTheme + '.css';
     theme.setAttribute('href', href.slice(0, themeIndex) + newTheme + '.css');
+    theme.onload = redisplayText;
 }
 
 function addMultipleEvents(element, events, handlers) {

@@ -29,3 +29,7 @@ body {
 .dur-btn {
     border-right: 4px solid #3c4455;
 }
+
+.incorrect-color {
+    color: #ea567d;
+}
