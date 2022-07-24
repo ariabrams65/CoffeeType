@@ -1,14 +1,9 @@
 'use strict'
 
-main();
+let testData = new TestData();
+assignEventListeners();
 
-function main() {
-    let textData = new TextData();
-    distributeTextData(textData);
-    assignEventListeners();
-}
-
-function TextData() {
+function TestData() {
     this.startTime;
     this.testStarted = false;
     this.text = [];
@@ -20,13 +15,6 @@ function TextData() {
     this.curWordIndex = 0;
     this.correctChars = 0;
     this.charsTyped = 0;
-    this.reset = () => {
-        for (let prop in this) {
-            if (prop != 'reset') {
-                this[prop] = 0;
-            }
-        }
-    }
 }
 
 function getCorrectColor() {
@@ -60,7 +48,7 @@ function changeTheme(event) {
     themeButton.value = newTheme;
     themeButton.style.backgroundColor = themeColor;
     changeThemeHref(newTheme);
-    redisplayText(event.currentTarget.textData);
+    redisplayText();
 }
 
 function changeThemeHref(newTheme) {
@@ -84,7 +72,7 @@ function durationPressed(event) {
         }
     }
     event.target.classList.add('color3');
-    if (!event.currentTarget.textData.testStarted) {
+    if (!testData.testStarted) {
         document.getElementById('timer').innerHTML = event.target.value;
     }
 }
@@ -126,11 +114,11 @@ function getDuration() {
 }
 
 
-function resetTest(event) {
-    clearInterval(event.currentTarget.textData.intervalId);
-    event.currentTarget.textData.reset();
+function resetTest() {
+    clearInterval(testData.intervalId);
+    testData = new TestData();
     document.getElementById('timer').innerHTML = getDuration(); 
-    changeText(event);
+    changeText();
     let textInput = document.getElementById('text-input');
     textInput.value = '';
     textInput.focus();
@@ -143,51 +131,50 @@ function textInputHandler(event) {
         event.currentTarget.value = '';
         return;
     }
-    let textData = event.currentTarget.textData;
-    if (!textData.testStarted) {
-        startTest(textData, !buttonPressed(document.getElementById('quotes')));
+    if (!testData.testStarted) {
+        startTest(!buttonPressed(document.getElementById('quotes')));
     }
     if ((input[input.length - 1] === ' ') ||
-    (textData.curWordIndex === textData.text.length - 1 && isWordCorrect(input, textData, true))) {
-        incrementWord(textData, input);
+    (testData.curWordIndex === testData.text.length - 1 && isWordCorrect(input, true))) {
+        incrementWord(input);
         event.currentTarget.value = '';
     } else {
-        if (!isWordCorrect(input, textData)) {
-            textData[textData.curWordIndex].correct = false;
+        if (!isWordCorrect(input)) {
+            testData.text[testData.curWordIndex].correct = false;
         } else {
-            textData[textData.curWordIndex].correct = true;
+            testData.text[testData.curWordIndex].correct = true;
         }
     }
-    redisplayText(textData);
+    redisplayText();
 }
 
-function incrementWord(textData, input) {
-    if (lastWordIndices(textData).includes(textData.curWordIndex)) {
-        textData.firstVisibleWordIndex = textData.curWordIndex + 1;
-        calculateLines(textData);
+function incrementWord(input) {
+    if (lastWordIndices().includes(testData.curWordIndex)) {
+        testData.firstVisibleWordIndex = testData.curWordIndex + 1;
+        calculateLines();
     }
     let trimmedInput = input.trimEnd();
-    textData.charsTyped += trimmedInput.length + 1;
-    if (!isWordCorrect(trimmedInput , textData, true)) {
-        textData[textData.curWordIndex].correct = false;
+    testData.charsTyped += trimmedInput.length + 1;
+    if (!isWordCorrect(trimmedInput, true)) {
+        testData.text[testData.curWordIndex].correct = false;
     } else {
-        textData.correctChars += trimmedInput.length + 1 
+        testData.correctChars += trimmedInput.length + 1 
     }
-    if (textData.curWordIndex === textData.text.length - 1) {
-        endTest(textData);
+    if (testData.curWordIndex === testData.text.length - 1) {
+        endTest();
     } else {
-        ++textData.curWordIndex;
+        ++testData.curWordIndex;
     }
 }
 
 
-function lastWordIndices(textData) {
-    return [textData.line2Index-1, textData.line3Index-1, textData.nextNonvisibleWordIndex -1];
+function lastWordIndices() {
+    return [testData.line2Index-1, testData.line3Index-1, testData.nextNonvisibleWordIndex -1];
 }
 
 
-function isWordCorrect(word, textData, mustMatch=false) {
-    let correctWord = textData.text[textData.curWordIndex].word;
+function isWordCorrect(word, mustMatch=false) {
+    let correctWord = testData.text[testData.curWordIndex].word;
     if (mustMatch) {
         return word === correctWord;
     }
@@ -195,19 +182,19 @@ function isWordCorrect(word, textData, mustMatch=false) {
 }
 
 
-function startTest(textData, timed) {
-    textData.testStarted = true;
-    textData.startTime = new Date();
+function startTest(timed) {
+    testData.testStarted = true;
+    testData.startTime = new Date();
     if (!timed) {
         return;
     }
     let timer = document.getElementById('timer');
     let time = parseFloat(getDuration());
-    textData.intervalId = setInterval(function() {
+    testData.intervalId = setInterval(function() {
         --time;
         if (time === 0) {
-            clearInterval(textData.intervalId);
-            endTest(textData);
+            clearInterval(testData.intervalId);
+            endTest();
         } else {
             timer.innerHTML = time;
         }
@@ -215,27 +202,18 @@ function startTest(textData, timed) {
 }
 
 
-function endTest(textData) {
-    let wmp = ((textData.correctChars / 5) / elapsedTime(textData)) * 60;
+function endTest() {
+    let wmp = ((testData.correctChars / 5) / elapsedTime()) * 60;
     wmp = Math.round(wmp);
-    let acc = Math.round((textData.correctChars / textData.charsTyped) * 100);
+    let acc = Math.round((testData.correctChars / testData.charsTyped) * 100);
     let results = document.querySelector('#results p');
     results.innerHTML = `wmp: ${wmp}    accuracy: ${acc}%`;
-    resetTest({currentTarget: {textData: textData}});
+    resetTest();
 }
 
-function elapsedTime(textData) {
-    return (new Date() - textData.startTime) / 1000;
+function elapsedTime() {
+    return (new Date() - testData.startTime) / 1000;
 }
-
-
-function distributeTextData(textData) {
-    let elements = getAllInteractiveElements();
-    for (const element in elements) {
-        elements[element].textData = textData;
-    }
-}
-
 
 function getAllInteractiveElements() {
     let elements = getTextModifyingElements();
@@ -249,42 +227,40 @@ function getAllInteractiveElements() {
 }
 
 
-async function changeText(event) {
-    let ct = event.currentTarget;
+async function changeText() {
     let words = (await requestText()).split(' ');
-    ct.textData.text = [];
+    testData.text = [];
     for (let word of words) {
-        ct.textData.text.push({word: word, correct: true});
+        testData.text.push({word: word, correct: true});
     }
-    resizeText({currentTarget: ct});
+    resizeText();
 }
 
 
-function resizeText(event) {
-    let textData = event.currentTarget.textData;
-    calculateLines(textData);
-    redisplayText(textData);
+function resizeText() {
+    calculateLines();
+    redisplayText();
 }
 
 
-function redisplayText(textData) {
-    line1.innerHTML = getHTMLLine(textData.line1Index, textData.line2Index, textData);
-    line2.innerHTML = getHTMLLine(textData.line2Index, textData.line3Index, textData);
-    line3.innerHTML = getHTMLLine(textData.line3Index, textData.nextNonvisibleWordIndex, textData);
+function redisplayText() {
+    line1.innerHTML = getHTMLLine(testData.line1Index, testData.line2Index);
+    line2.innerHTML = getHTMLLine(testData.line2Index, testData.line3Index);
+    line3.innerHTML = getHTMLLine(testData.line3Index, testData.nextNonvisibleWordIndex);
 }
 
 
-function calculateLines(textData) {
-    let text = textData.text;
-    textData.line1Index = textData.firstVisibleWordIndex;
-    textData.line2Index = calculateNextLineIndex(textData.line1Index, text);
-    textData.line3Index = calculateNextLineIndex(textData.line2Index, text);
-    textData.nextNonvisibleWordIndex =
-        calculateNextLineIndex(textData.line3Index, text);
+function calculateLines() {
+    testData.line1Index = testData.firstVisibleWordIndex;
+    testData.line2Index = calculateNextLineIndex(testData.line1Index);
+    testData.line3Index = calculateNextLineIndex(testData.line2Index);
+    testData.nextNonvisibleWordIndex =
+        calculateNextLineIndex(testData.line3Index);
 }
 
 
-function calculateNextLineIndex(index, text) {
+function calculateNextLineIndex(index) {
+    let text = testData.text;
     let line = '';
     for (; index < text.length && stringFits(line + text[index].word + ' '); ++index) {
         line += text[index].word + ' ';
@@ -293,19 +269,19 @@ function calculateNextLineIndex(index, text) {
 }
 
 
-function getHTMLLine(startIndex, endIndex, textData) {
+function getHTMLLine(startIndex, endIndex) {
     let HTMLLine = '';
     for (; startIndex < endIndex; ++startIndex) {
-        HTMLLine += getColoredWordAsHTML(textData, startIndex) + ' ';
+        HTMLLine += getColoredWordAsHTML(startIndex) + ' ';
     }
     return HTMLLine;
 }
 
 
-function getColoredWordAsHTML(textData, wordIndex) {
-    let word = textData.text[wordIndex];
+function getColoredWordAsHTML(wordIndex) {
+    let word = testData.text[wordIndex];
     let color = word.correct ? getCorrectColor() : getIncorrectColor();
-    if (textData.curWordIndex === wordIndex) {
+    if (testData.curWordIndex === wordIndex) {
         return `<span style="color:${color}" class='highlight'>${word.word}</span>`;
     }
     return `<span style="color:${color}">${word.word}</span>`;
