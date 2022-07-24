@@ -1,0 +1,31 @@
+body {
+    background-color: white;
+}
+
+.text-color {
+    color: black;
+}
+
+.color2 {
+    background-color: rgb(233, 233, 233);
+}
+
+.test-info {
+    color: black;
+}
+
+.color3 {
+    background-color: rgb(173, 173, 173);
+}
+
+.btn-text-color {
+    color: black;
+}
+
+.highlight {
+    background-color:#b6b6b66b;
+}
+
+.dur-btn {
+    border-right: 4px solid white;
+}
