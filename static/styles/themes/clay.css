@@ -1,0 +1,35 @@
+body {
+    background-color: #1c1c1c;
+}
+
+.text-color {
+    color: #e2d8c8;
+}
+
+.color2 {
+    background-color: #64242c;
+}
+
+.test-info {
+    color: #e2d8c8;
+}
+
+.color3 {
+    background-color: #96535a; 
+}
+
+.btn-text-color {
+    color: #e2d8c8;
+}
+
+.highlight {
+    background-color:#b6b6b66b;
+}
+
+.dur-btn {
+    border-right: 4px solid #1c1c1c;
+}
+
+.incorrect-color {
+    color: #1c1c1c
+}

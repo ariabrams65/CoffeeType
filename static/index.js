@@ -46,7 +46,7 @@ function changeTheme(event) {
     themeButton.innerHTML = newTheme;
     themeButton.value = newTheme;
     themeButton.style.backgroundColor = themeColor;
-    changeThemeHref(newTheme);
+    changeThemeHref(newTheme.split(' ').join(''));
 }
 
 function changeThemeHref(newTheme) {
@@ -203,11 +203,11 @@ function startTest(timed) {
 }
 
 function endTest() {
-    let wmp = ((testData.correctChars / 5) / elapsedTime()) * 60;
-    wmp = Math.round(wmp);
+    let wpm = ((testData.correctChars / 5) / elapsedTime()) * 60;
+    wpm = Math.round(wmp);
     let acc = Math.round((testData.correctChars / testData.charsTyped) * 100);
     let results = document.querySelector('#results p');
-    results.innerHTML = `wmp: ${wmp}    accuracy: ${acc}%`;
+    results.innerHTML = `wpm: ${wpm}    accuracy: ${acc}%`;
     resetTest();
 }
 

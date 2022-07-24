@@ -171,7 +171,6 @@ body {
 }
 
 #theme-content button {
-    color: inherit;
     font-size: 16px;
     font-weight: bold;
     border: none;
@@ -188,12 +187,25 @@ body {
 
 #gumdrop {
     background-color: #ea567d;
+    color: #3c4455;
 }
 
 #nautilus {
-    background-color: #dcb428;
+    background-color: #2b5b93;
+    color: #142c4c;
 }
 
 #bandwhite {
     background-color: rgb(233, 233, 233);
+    color: black;
+}
+
+#clay {
+    background-color: #64242c;
+    color: #e2d8c8;
+}
+
+#sunscorched {
+    background-color: #ffe884;
+    color: #38496a;
 }
