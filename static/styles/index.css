@@ -2,9 +2,6 @@ body {
     margin: 35px;
 }
 
-#navbar {
-}
-
 #title {
     display: inline-block;
     margin: 0;
@@ -167,13 +164,13 @@ body {
 #theme-content {
     display: none;
     position: absolute;
-    bottom: 22px;
+    bottom: 0;
     width: 100%;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;  
 }
 
 #theme-content button {
+    margin-top: 10px;
     font-size: 16px;
     font-weight: bold;
     border: none;
@@ -182,6 +179,7 @@ body {
     text-decoration: none;
     display: block;
     width: 100%;
+    border-radius: 4px;
 }
 
 #theme-dropup:hover #theme-content {
@@ -195,11 +193,11 @@ body {
 
 #nautilus {
     background-color: #2b5b93;
-    color: #142c4c;
+    color: #dcb428;
 }
 
-#bandwhite {
-    background-color: rgb(233, 233, 233);
+#bandw {
+    background-color: rgb(150, 148, 148);
     color: black;
 }
 
@@ -214,6 +212,6 @@ body {
 }
 
 #halloween {
-    background-color: #eb6123;
-    color: black;
+    background-color: #c44307;
+    color: rgb(240, 240, 240);
 }

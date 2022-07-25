@@ -3,27 +3,27 @@ body {
 }
 
 .text-color {
-    color: black;
+    color: rgb(240, 240, 240);
 }
 
 .color2 {
-    background-color: #e66e36;
+    background-color: #1b1b1b;
 }
 
 .test-info {
-    color: white;
+    color: rgb(240, 240, 240);
 }
 
 .color3 {
-    background-color: #5f206b;
+    background-color: #c44307;
 }
 
 .btn-text-color {
-    color: black;
+    color: rgb(240, 240, 240);
 }
 
 .highlight {
-    background-color: #c44307;
+    background-color: #5f5f5f;
 }
 
 .dur-btn {
@@ -31,5 +31,13 @@ body {
 }
 
 .incorrect-color {
-    color: white;
+    color: #c44307;
+}
+
+.coffee-color {
+    color: rgb(240, 240, 240);
+}
+
+.type-color {
+    color: #e66e36;
 }

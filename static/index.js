@@ -40,12 +40,18 @@ function assignEventListeners() {
 }
 
 function changeTheme(event) {
+    if (event.target.value === undefined) {
+        return;
+    }
     let newTheme = event.target.value;
-    let themeColor = window.getComputedStyle(event.target, null).getPropertyValue('background-color');
+    let style = window.getComputedStyle(event.target, null);
+    let themeBgColor = style.getPropertyValue('background-color');
+    let themeColor = style.getPropertyValue('color');
     let themeButton = document.getElementById('cur-theme-btn');
     themeButton.innerHTML = newTheme;
     themeButton.value = newTheme;
-    themeButton.style.backgroundColor = themeColor;
+    themeButton.style.backgroundColor = themeBgColor;
+    themeButton.style.color = themeColor;
     changeThemeHref(newTheme.split(' ').join(''));
 }
 

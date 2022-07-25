@@ -1,5 +1,5 @@
 body {
-    background-color: white;
+    background-color: rgb(236, 236, 236);
 }
 
 .text-color {
@@ -7,7 +7,7 @@ body {
 }
 
 .color2 {
-    background-color: rgb(233, 233, 233);
+    background-color: rgb(206, 206, 206);
 }
 
 .test-info {
@@ -15,7 +15,7 @@ body {
 }
 
 .color3 {
-    background-color: rgb(173, 173, 173);
+    background-color: rgb(150, 148, 148);
 }
 
 .btn-text-color {
@@ -23,13 +23,21 @@ body {
 }
 
 .highlight {
-    background-color:#b6b6b66b;
+    background-color: rgb(150, 148, 148);
 }
 
 .dur-btn {
-    border-right: 4px solid white;
+    border-right: 4px solid rgb(236, 236, 236);
 }
 
 .incorrect-color {
     color: red;
+}
+
+.coffee-color {
+    color: black;
+}
+
+.type-color {
+    color: rgb(116, 116, 116);
 }
