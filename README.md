@@ -11,7 +11,7 @@ CoffeType is a minimalistic typing test that supports numerous customization opt
 * Special Characters (@#$%^&)
 * Themes to customize the appearance of the website
 
-![image](CoffeeType-homepage.PNG)
+![image](images/CoffeeType-homepage.PNG)
 
 ## Quotes
 
