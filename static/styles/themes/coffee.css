@@ -1,0 +1,44 @@
+
+body {
+    background-color: #361500;
+}
+
+.text-color {
+    color: #cc9544;
+}
+
+.color2 {
+    background-color: #1c0a00;
+}
+
+.test-info {
+    color: #cc9544;
+}
+
+.color3 {
+    background-color: #603601;
+}
+
+.btn-text-color {
+    color: #f8f0e3;
+}
+
+.highlight {
+    background-color: #5a441c;
+}
+
+.dur-btn {
+    border-right: 4px solid #361500;
+}
+
+.incorrect-color {
+    color: #603601;
+}
+
+.coffee-color {
+    color: #cc9544;
+}
+
+.type-color {
+    color: #1c0a00; 
+}

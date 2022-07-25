@@ -2,6 +2,10 @@ body {
     margin: 35px;
 }
 
+#navbar {
+    margin-bottom: 50px;
+}
+
 #title {
     display: inline-block;
     margin: 0;
@@ -233,4 +237,9 @@ body {
 #halloween {
     background-color: #c44307;
     color: rgb(240, 240, 240);
+}
+
+#coffee {
+    background-color: #1c0a00;
+    color: #cc9544; 
 }

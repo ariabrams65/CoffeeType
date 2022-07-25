@@ -7,14 +7,6 @@ views = Blueprint(__name__, "views")
 def home():
     return render_template("index.html")
 
-@views.route("/settings")
-def settings():
-    return render_template("settings.html")
-
-@views.route("/login")
-def login():
-    return render_template("login.html")
-
 @views.route("/generate-text", methods=['POST'])
 def get_generated_text():
     json = request.get_json(force=True)
