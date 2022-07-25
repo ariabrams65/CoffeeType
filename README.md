@@ -11,6 +11,8 @@ CoffeType is a minimalistic typing test that supports numerous customization opt
 * Special Characters (@#$%^&)
 * Themes to customize the appearance of the website
 
+![image](CoffeeType-homepage.PNG)
+
 ## Quotes
 
 Quotes are generated using [Quotable](https://github.com/lukePeavey/quotable), a free, open source quotations API.
