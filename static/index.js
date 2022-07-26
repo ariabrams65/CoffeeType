@@ -27,7 +27,9 @@ function getIncorrectColor() {
 
 function assignEventListeners() {
     let elements = getAllInteractiveElements();
-    addMultipleEvents(elements.window, ['resize', 'DOMContentLoaded'], [resizeText, changeText]);
+    addMultipleEvents(elements.window, ['resize', 'DOMContentLoaded', 'DOMContentLoaded'], [resizeText, changeText, () => {
+        document.getElementById('text-input').focus();
+    }]);
     elements.wordset.addEventListener('change', resetTest);
     elements.duration.addEventListener('click', durationPressed);
     addMultipleEvents(elements.quotes, ['click', 'click', 'click'], [toggleButton, unpressTextModifyingButtons, resetTest]);
