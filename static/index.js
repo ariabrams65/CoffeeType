@@ -215,6 +215,7 @@ function endTest() {
     let results = document.querySelector('#results p');
     results.innerHTML = `wpm: ${wpm}    accuracy: ${acc}%`;
     resetTest();
+    document.getElementById('text-input').blur();
 }
 
 function elapsedTime() {
