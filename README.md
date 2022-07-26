@@ -1,6 +1,6 @@
 # CoffeeType
 
-CoffeType is a minimalistic typing test that supports numerous customization options including:
+[CoffeType](https://coffee-type.herokuapp.com/) is a minimalistic typing test that supports numerous customization options including:
 
 * Multiple languages
 * Most common X amount of words in each language
